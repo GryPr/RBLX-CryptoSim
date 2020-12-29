@@ -1,5 +1,6 @@
-import { makeHello } from "shared/module";
+import { makeHello, DataStore } from "shared/module";
 import { CollectionService } from "@rbxts/services"
+const Players = game.GetService("Players");
 
 
 for (const obj of CollectionService.GetTagged("Kill")) {
@@ -16,4 +17,9 @@ for (const obj of CollectionService.GetTagged("Kill")) {
     }
 }
 
-print(makeHello("Test"));
+print(makeHello("Two"));
+
+let data = new DataStore();
+
+Players.PlayerAdded.Connect((player) => data.playerAdded(player))
+Players.PlayerRemoving.Connect((player) => data.playerRemoved(player))
