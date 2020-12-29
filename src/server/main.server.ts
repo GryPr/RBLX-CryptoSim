@@ -1,11 +1,19 @@
 import { makeHello } from "shared/module";
 import { CollectionService } from "@rbxts/services"
 
+
 for (const obj of CollectionService.GetTagged("Kill")) {
-    if (obj.IsA("Part")){
-        obj.Touched.Connect((part) => part.Parent?.FindFirstChildOfClass("Humanoid")?.TakeDamage(5));
+    if (obj.IsA("Model")){
+        for (const child of obj.GetChildren()){
+            print(child.Name)
+            if (child.IsA("Part")){
+                child.Touched.Connect((part) => part.Parent?.FindFirstChildOfClass("Humanoid")?.TakeDamage(5));
+                child.Color = Color3.fromRGB(255,255,255)
+            }
+        }
+        // var cframe = obj.GetPrimaryPartCFrame()
+        // obj.Touched.Connect((part) => part.Parent?.FindFirstChildOfClass("Humanoid")?.TakeDamage(5));
     }
 }
 
 print(makeHello("Test"));
-
