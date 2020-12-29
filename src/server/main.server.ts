@@ -1,4 +1,5 @@
-import { makeHello, DataStore } from "shared/module";
+import { makeHello } from "shared/module";
+import { DataStore } from "shared/datastore"
 import { CollectionService } from "@rbxts/services"
 const Players = game.GetService("Players");
 
