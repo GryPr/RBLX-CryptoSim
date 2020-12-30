@@ -6,5 +6,3 @@ clickEvent.Connect((player:Player) => {
     print(`Server received click by ${player.Name}`);
     data.addSalt(player, 1);
 });
-
-

@@ -1,30 +1,100 @@
 import * as Roact from "@rbxts/roact";
+import * as Flipper from "@rbxts/flipper"
+import { SoundService } from "@rbxts/services";
 const Players = game.GetService("Players");
 
 const PlayerGui = Players.LocalPlayer!.FindFirstChildOfClass(
     "PlayerGui",
 );
 
-interface CounterUI {
-    name: string;
+interface shopState {
+    shopVisible: boolean;
 }
 
-function Counter(props: {name: string}) {
-    return <textlabel 
-    Key="Test"
-    Size={new UDim2(0.05, 0, 0.05, 0)}
-    Text={`Hello, ${props.name}`}/>
+class Shop extends Roact.Component<
+    {},
+    shopState
+> {
+
+    motor:Flipper.SingleMotor
+    binding:Roact.RoactBinding<number>
+
+    public constructor(props:{}) {
+        super(props);
+        this.motor = new Flipper.SingleMotor(0);
+        const [binding, setBinding] = Roact.createBinding(this.motor.getValue());
+        this.binding = binding;
+        this.motor.onStep(setBinding)
+        this.setState({
+            shopVisible: false,
+        })
+    }
+
+    public render(): Roact.Element {
+        return (
+        <screengui>
+            <imagebutton 
+                Position={new UDim2(0.04, 0, 0.08, 0)}
+                Image="rbxassetid://6159337597"
+                Size={this.binding.map((value) => {return new UDim2(0.1,0,0.1,0).Lerp(new UDim2(0.08,0,0.08,0), value)})}
+                SizeConstraint={"RelativeYY"}
+                BackgroundTransparency={1}
+                AnchorPoint={new Vector2(0.5,0.5)}
+                ImageColor3={new Color3(240,240,240)}
+                Event={{
+                    MouseButton1Down: () => {
+                        this.motor.setGoal(new Flipper.Spring(1, {
+                            frequency: 15,
+                            dampingRatio: 1
+                        }))
+                        playButtonSound("rbxassetid://6042053626");
+                    },
+                    MouseButton1Up: () => {
+                        this.motor.setGoal(new Flipper.Spring(0, {
+                            frequency: 25,
+                            dampingRatio: 0.75
+                        }))
+                        if (this.state.shopVisible === true) {
+                            this.setState({
+                                shopVisible: false
+                            })
+                        } else {
+                            this.setState({
+                                shopVisible: true
+                            })
+                        }
+                    },
+                    MouseEnter: () => {
+                        this.motor.setGoal(new Flipper.Spring(-0.5, {
+                            frequency: 15,
+                            dampingRatio: 1
+                        }))
+                    },
+                    MouseLeave: () => {
+                        this.motor.setGoal(new Flipper.Spring(0, {
+                            frequency: 25,
+                            dampingRatio: 0.75
+                        }))
+                    }
+                }}>
+            </imagebutton>
+            <textbutton 
+                Key="Test"
+                Size={new UDim2(0.05, 0, 0.05, 0)}
+                Visible={this.state.shopVisible}
+                Text={`Hello`}
+                />
+        </screengui>
+        
+        )
+    }
 }
 
-function ShopButton() {
-    return (
-        <imagebutton 
-        Position={new UDim2(0.019, 0, 0.044, 0)}
-        Image="rbxassetid://6159337597"
-        Size={new UDim2(0,79,0,78)}
-        BackgroundTransparency={1}
-        ></imagebutton>
-    )
+function playButtonSound(id:string){
+    let sound = new Instance("Sound");
+    sound.SoundId = id;
+    SoundService.PlayLocalSound(sound);
+    sound.Destroy();
 }
 
 function MoneyCounter() {
@@ -39,34 +109,33 @@ function MoneyCounter() {
             Size={new UDim2(0,27,0,26)}
             Image="rbxassetid://6159358790"
             BackgroundTransparency={1}
-            Event={{MouseButton1Click: () => ToggleCashShop(true)}}
             />
         </frame>
     )
 }
 
-function CashShop(props: {visible: boolean}){
-    return (
-        <textlabel 
-        Key="Test"
-        Size={new UDim2(0.05, 0, 0.05, 0)}
-        Visible={props.visible}
-        Text={`Hello`}/>
-    )
+interface mainUIState {
 }
 
-function Test(props: {shopVisible: boolean}) {
-    return (
+class MainUI extends Roact.Component<
+        {},
+        mainUIState
+> {
+    constructor(props: {}) {
+        super(props);
+        this.setState({
+        })
+    }
+
+    public render(): Roact.Element {
+        return (
         <screengui>
-            <ShopButton/>
+            <Shop/>
             <MoneyCounter/>
-            <CashShop visible={props.shopVisible}/>
         </screengui>
-    );
+        )
+    }
+
 }
 
-let handle = Roact.mount(<Test shopVisible={false}/>, PlayerGui, "UI")
-
-function ToggleCashShop(visible:boolean){
-    Roact.update(handle, <Test shopVisible={visible}/>)
-}
+let handle = Roact.mount(<MainUI/>, PlayerGui, "UI")
