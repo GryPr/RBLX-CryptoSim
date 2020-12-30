@@ -1,8 +1,6 @@
-import { makeHello } from "shared/module";
-import { DataStore } from "shared/datastore"
+import { data } from "shared/datastore"
 import { CollectionService } from "@rbxts/services"
 const Players = game.GetService("Players");
-
 
 for (const obj of CollectionService.GetTagged("Kill")) {
     if (obj.IsA("Model")){
@@ -17,10 +15,6 @@ for (const obj of CollectionService.GetTagged("Kill")) {
         // obj.Touched.Connect((part) => part.Parent?.FindFirstChildOfClass("Humanoid")?.TakeDamage(5));
     }
 }
-
-print(makeHello("Two"));
-
-let data = new DataStore();
 
 Players.PlayerAdded.Connect((player) => data.playerAdded(player))
 Players.PlayerRemoving.Connect((player) => data.playerRemoved(player))
