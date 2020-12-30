@@ -3,17 +3,23 @@ import { Profile, ProfileStore, ViewProfile } from "@rbxts/profileservice/global
 const Players = game.GetService("Players");
 
 type PlayerData = {
-	Money: number,
-	Salt: number,
+    Money: number,
+    MoneyExp: number,
+    Salt: number,
+    SaltExp: number,
+    Multipliers: Array<number>,
 }
 
 export class DataStore {
 
-	Profiles = new Map<Player, Profile<PlayerData>>()
+    Profiles = new Map<Player, Profile<PlayerData>>()
 
 	ProfileTemplate: PlayerData = {
-		Money: 0,
-		Salt: 0,
+        Money: 0,
+        MoneyExp: 1,
+        Salt: 0,
+        SaltExp: 1,
+        Multipliers: [1],
 	}
 	profileServ = ProfileService.GetProfileStore(
 		"PlayerData",
@@ -27,11 +33,52 @@ export class DataStore {
 		let profile = this.profileServ.LoadProfileAsync(
 			`Player_${player.UserId}`,
 			"ForceLoad"
-		)
-		this.Profiles.set(player, profile as Profile<PlayerData>)
+        )
+        if (profile === undefined) {
+            return
+        }
+		this.Profiles.set(player, profile)
 	}
 
 	playerRemoved(player:Player){
 		this.Profiles.delete(player)
-	}
+    }
+    
+    addSalt(player:Player, clicks:number){
+        let profile = this.Profiles.get(player);
+        print(profile);
+        if (profile === undefined) {
+            return;
+        }
+        if (profile.Data.Salt === undefined) {
+            profile.Data.Salt = 0;
+        }
+        profile.Data.Salt += this.calculateSalt(player, clicks);
+        if (profile.Data.Salt > 10) {
+
+        }
+    }
+
+    addMoney(player:Player, money:number){
+        let profile = this.Profiles.get(player)
+        if (profile === undefined) {
+            return;
+        }
+        if (profile.Data.Money === undefined) {
+            profile.Data.Money = 0;
+        }
+    }
+
+    calculateMultiplier(player:Player){
+        let profile = this.Profiles.get(player);
+        let multiplier:number = 1;
+        profile?.Data.Multipliers.forEach((element) => {multiplier*=element});
+        return multiplier;
+    }
+
+    calculateSalt(player:Player, salt:number) {
+        return this.calculateMultiplier(player)*salt;
+    }
 }
+
+export let data = new DataStore()
