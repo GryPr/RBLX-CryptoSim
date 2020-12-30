@@ -46,6 +46,7 @@ export class DataStore {
     
     addSalt(player:Player, clicks:number){
         let profile = this.Profiles.get(player);
+        profile?.Reconcile()
         print(profile);
         if (profile === undefined) {
             return;
