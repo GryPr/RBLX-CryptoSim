@@ -44,7 +44,7 @@ export class DataStore {
 		this.Profiles.delete(player)
     }
     
-    addSalt(player:Player, clicks:number){
+    addSalt(player:Player, clicks:number): void | number {
         let profile = this.Profiles.get(player);
         profile?.Reconcile()
         print(profile);
@@ -54,10 +54,25 @@ export class DataStore {
         if (profile.Data.Salt === undefined) {
             profile.Data.Salt = 0;
         }
-        profile.Data.Salt += this.calculateSalt(player, clicks);
+        let addend = this.calculateSalt(player, clicks)
+        profile.Data.Salt += addend;
+        // TODO: Deal with exponential
         if (profile.Data.Salt > 10) {
-
         }
+        return addend;
+    }
+
+    getSalt(player:Player): void | number {
+        let profile = this.Profiles.get(player);
+        profile?.Reconcile()
+        print(profile);
+        if (profile === undefined) {
+            return;
+        }
+        if (profile.Data.Salt === undefined) {
+            profile.Data.Salt = 0;
+        }
+        return profile.Data.Salt;
     }
 
     addMoney(player:Player, money:number){

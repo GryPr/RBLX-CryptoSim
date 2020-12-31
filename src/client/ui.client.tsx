@@ -1,6 +1,8 @@
 import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper"
 import { SoundService } from "@rbxts/services";
+import Net from "@rbxts/net";
+
 const Players = game.GetService("Players");
 
 const PlayerGui = Players.LocalPlayer!.FindFirstChildOfClass(
@@ -94,6 +96,44 @@ class Shop extends Roact.Component<
     }
 }
 
+interface counterState {
+    saltTotal: number,
+    moneyTotal: number
+}
+
+class Counter extends Roact.Component<{},counterState> {
+    private running: boolean = false;
+
+    public constructor(props:{}) {
+        super(props);
+    }
+
+    public render(): Roact.Element{
+        return(
+            <screengui>
+
+            </screengui>
+        )
+    }
+
+    public didMount() {
+        this.running = true;
+
+        Net.WaitForClientEventAsync("returnSaltTotal").then(event => {
+            event.Connect((cb) => {
+                if (typeIs(cb, "number")) {
+                    this.state.saltTotal = cb;
+                }
+                else {
+                    print("Error receiving callback from server after click")
+                }
+            })
+        })
+
+    }
+}
+
+
 function playButtonSound(id:string){
     let sound = new Instance("Sound");
     sound.SoundId = id;
@@ -121,10 +161,7 @@ function MoneyCounter() {
 interface mainUIState {
 }
 
-class MainUI extends Roact.Component<
-        {},
-        mainUIState
-> {
+class MainUI extends Roact.Component<{}, mainUIState> {
     constructor(props: {}) {
         super(props);
         this.setState({
