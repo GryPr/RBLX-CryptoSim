@@ -23,7 +23,7 @@ clickEvent.Connect((player:Player) => {
 
 initEvent.Connect((player:Player) => {
     print("Starting init")
-    wait(1)
+    wait(0.5)
     let saltTotal = data.getSalt(player);
     if (saltTotal !== undefined){
         returnSaltTotal.SendToPlayer(player, saltTotal);

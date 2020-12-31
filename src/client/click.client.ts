@@ -4,8 +4,9 @@ const localPlayer = Players.LocalPlayer
 const localMouse = localPlayer.GetMouse()
 
 // Detects clicks
-localMouse.Button1Down.Connect(() => Click());
+localMouse.Button1Down.Connect(() => client.playerClick());
 
+// TODO: Check that it doesnt' get stuck on mobile
 function Click() {
     let running:boolean = true;
     spawn(() => {

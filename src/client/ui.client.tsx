@@ -37,30 +37,30 @@ class Shop extends Roact.Component<
         <screengui>
             <textbutton 
                 Key="CashShopButton"
-                Position={new UDim2(0.06, 0, 0.3, 0)}
+                Position={new UDim2(0.07, 0, 0.3, 0)}
                 Font={"Highway"}
                 Text={"💰 CASH SHOP 💰"}
                 TextScaled={true}
                 Style={"RobloxRoundDropdownButton"}
                 //Image="rbxassetid://6159337597"
-                Size={this.binding.map((value) => {return new UDim2(0.1,20,0.05,30).Lerp(new UDim2(0.08,20,0.04,30), value)})}
+                Size={this.binding.map((value) => {return new UDim2(0.1,20,0.05,20).Lerp(new UDim2(0.08,20,0.04,20), value)})}
                 SizeConstraint={"RelativeXY"}
                 BackgroundTransparency={1}
                 AnchorPoint={new Vector2(0.5,0.5)}
                 //ImageColor3={new Color3(240,240,240)}
                 Event={{
                     MouseButton1Down: () => {
-                        // this.motor.setGoal(new Flipper.Spring(0.25, {
-                        //     frequency: 15,
-                        //     dampingRatio: 1
-                        // }))
+                        this.motor.setGoal(new Flipper.Spring(0.25, {
+                            frequency: 15,
+                            dampingRatio: 1
+                        }))
                         playButtonSound("rbxassetid://6042053626");
                     },
                     MouseButton1Up: () => {
-                        // this.motor.setGoal(new Flipper.Spring(0, {
-                        //     frequency: 25,
-                        //     dampingRatio: 0.75
-                        // }))
+                        this.motor.setGoal(new Flipper.Spring(-0.5, {
+                            frequency: 25,
+                            dampingRatio: 0.75
+                        }))
                         if (this.state.shopVisible === true) {
                             this.setState({
                                 shopVisible: false

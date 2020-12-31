@@ -1,8 +1,4 @@
-import Net from "@rbxts/net";
 import NetClientEvent from "@rbxts/net/out/ClientEvent";
-const Players = game.GetService("Players");
-const localPlayer = Players.LocalPlayer
-const localMouse = localPlayer.GetMouse()
 
 class ClientConnector {
 
