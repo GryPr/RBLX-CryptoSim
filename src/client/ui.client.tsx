@@ -43,7 +43,7 @@ class Shop extends Roact.Component<
                 TextScaled={true}
                 Style={"RobloxRoundDropdownButton"}
                 //Image="rbxassetid://6159337597"
-                Size={this.binding.map((value) => {return new UDim2(0.1,0,0.05,0).Lerp(new UDim2(0.08,0,0.04,0), value)})}
+                Size={this.binding.map((value) => {return new UDim2(0.1,20,0.05,30).Lerp(new UDim2(0.08,20,0.04,30), value)})}
                 SizeConstraint={"RelativeXY"}
                 BackgroundTransparency={1}
                 AnchorPoint={new Vector2(0.5,0.5)}
@@ -106,26 +106,41 @@ class Counter extends Roact.Component<{},counterState> {
 
     public constructor(props:{}) {
         super(props);
+        this.setState({
+            saltTotal: 0,
+            moneyTotal: 0,
+        })
     }
 
     public render(): Roact.Element{
         return(
             <screengui>
-
+                <textlabel 
+                    Key="SaltCounter"
+                    Size={new UDim2(0.05, 0, 0.05, 0)}
+                    Text={`${this.state.saltTotal}`}
+                    />
             </screengui>
         )
     }
 
     public didMount() {
         this.running = true;
-
+        let initEvent = new Net.ClientEvent("Init");
+        initEvent.SendToServer();
         Net.WaitForClientEventAsync("returnSaltTotal").then(event => {
             event.Connect((cb) => {
                 if (typeIs(cb, "number")) {
-                    this.state.saltTotal = cb;
+                    this.setState(state => {
+                        return {
+                            saltTotal: cb,
+                            moneyTotal: state.moneyTotal
+                        }
+                    })
+                    print(cb)
                 }
                 else {
-                    print("Error receiving callback from server after click")
+                    print(`Error receiving callback from server: ${cb}`)
                 }
             })
         })
@@ -172,9 +187,14 @@ class MainUI extends Roact.Component<{}, mainUIState> {
         return (
         <screengui>
             <Shop/>
+            <Counter/>
             <MoneyCounter/>
         </screengui>
         )
+    }
+
+    public didMount() {
+        
     }
 
 }
