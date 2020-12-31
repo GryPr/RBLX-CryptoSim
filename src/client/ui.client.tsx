@@ -21,20 +21,34 @@ class Shop extends Roact.Component<
     motor:Flipper.SingleMotor
     binding:Roact.RoactBinding<number>
 
+    cashShopMotor:Flipper.SingleMotor
+    cashShopBinding:Roact.RoactBinding<number>
+
     public constructor(props:{}) {
         super(props);
+
+        this.setState({
+            shopVisible: false,
+        })
+
+        // Cash Shop Button Flipper Bindings
         this.motor = new Flipper.SingleMotor(0);
         const [binding, setBinding] = Roact.createBinding(this.motor.getValue());
         this.binding = binding;
         this.motor.onStep(setBinding)
-        this.setState({
-            shopVisible: false,
-        })
+
+
+        // Cash Shop Flipper Bindings
+        this.cashShopMotor = new Flipper.SingleMotor(0);
+        const [cashShopBinding, setCashShopBinding] = Roact.createBinding(this.cashShopMotor.getValue());
+        this.cashShopBinding = cashShopBinding;
+        this.cashShopMotor.onStep(setCashShopBinding)
+
     }
 
     public render(): Roact.Element {
         return (
-        <screengui>
+        <screengui Key="Shop">
             <textbutton 
                 Key="CashShopButton"
                 Position={new UDim2(0.07, 0, 0.3, 0)}
@@ -61,14 +75,23 @@ class Shop extends Roact.Component<
                             frequency: 25,
                             dampingRatio: 0.75
                         }))
+
                         if (this.state.shopVisible === true) {
                             this.setState({
                                 shopVisible: false
                             })
+                            this.cashShopMotor.setGoal(new Flipper.Spring(0, {
+                                frequency: 5,
+                                dampingRatio: 1
+                            }))
                         } else {
                             this.setState({
                                 shopVisible: true
                             })
+                            this.cashShopMotor.setGoal(new Flipper.Spring(1, {
+                                frequency: 5,
+                                dampingRatio: 1
+                            }))
                         }
                     },
                     MouseEnter: () => {
@@ -87,9 +110,39 @@ class Shop extends Roact.Component<
             </textbutton>
             <frame 
                 Key="CashShop"
-                Size={new UDim2(0.05, 0, 0.05, 0)}
-                Visible={this.state.shopVisible}
-                />
+                Position={this.cashShopBinding.map((value) => {return new UDim2(0.5, 0, -2, 0).Lerp(new UDim2(0.5, 0, 0.5, 0), value)})}
+                BackgroundColor3={new Color3(255,255,255)}
+                BorderSizePixel={0}
+                Size={new UDim2(0.5,0,0.8,0)}
+                //Visible={this.state.shopVisible}
+                //SizeConstraint={"RelativeXY"}
+                AnchorPoint={new Vector2(0.5,0.5)}>
+                    <imagebutton
+                    Image={"rbxassetid://6159628368"}
+                    BackgroundTransparency={1}
+                    Position={new UDim2(0.1,0,0.1,0)}
+                    Size={new UDim2(0.2,0,0.2,0)}
+                    SizeConstraint="RelativeYY">
+                        <textlabel
+                        AnchorPoint={new Vector2(0.5,0.5)}
+                        BackgroundTransparency={1}
+                        Position={new UDim2(0.5,0,1,0)}
+                        Size={new UDim2(1,0,0.5,0)}
+                        Font="PatrickHand"
+                        Text="$10,000"
+                        TextScaled={true}
+                        />
+                    <uigridlayout
+                    CellPadding={new UDim2(0,10,0,10)}
+                    CellSize={new UDim2(0,100,0,100)}
+                    HorizontalAlignment="Center"
+                    SortOrder="Name"
+                    VerticalAlignment="Top"/>
+                    </imagebutton>
+                    <imagebutton/>
+                    <imagebutton/>
+                    <imagebutton/>
+            </frame>
         </screengui>
         
         )
@@ -114,12 +167,58 @@ class Counter extends Roact.Component<{},counterState> {
 
     public render(): Roact.Element{
         return(
-            <screengui>
-                <textlabel 
-                    Key="SaltCounter"
-                    Size={new UDim2(0.05, 0, 0.05, 0)}
-                    Text={`${this.state.saltTotal}`}
-                    />
+            <screengui Key="Counter">
+                
+                <frame
+                Key="SaltCounter"
+                BackgroundTransparency={1}
+                Position={new UDim2(0.02,0,0.9,0)}
+                Size={new UDim2(0.1,20,0.04,20)}>
+
+                    <textlabel
+                    Key="SaltCounterText"
+                    BackgroundTransparency={1}
+                    Position={new UDim2(0.3,0,0,0)}
+                    Size={new UDim2(2,0,1,0)}
+                    Font="Highway"
+                    TextScaled={true}
+                    TextXAlignment="Left"
+                    Text={`${this.state.saltTotal}`}/>
+
+                    <imagelabel
+                    Key="SaltCounterImage"
+                    BackgroundTransparency={1}
+                    Position={new UDim2(0,0,0.143,0)}
+                    Size={new UDim2(0.25,0,0.25,0)}
+                    SizeConstraint="RelativeXX"
+                    Image={"rbxassetid://6169181960"}/>
+                </frame>
+
+                <frame
+                Key="MoneyCounter"
+                BackgroundTransparency={1}
+                Position={new UDim2(0.02,0,0.8,0)}
+                Size={new UDim2(0.1,20,0.04,20)}>
+
+                    <textlabel
+                    Key="MoneyCounterText"
+                    BackgroundTransparency={1}
+                    Position={new UDim2(0.3,0,0,0)}
+                    Size={new UDim2(2,0,1,0)}
+                    Font="Highway"
+                    TextScaled={true}
+                    TextXAlignment="Left"
+                    Text={`${this.state.moneyTotal}`}/>
+
+                    <imagelabel
+                    Key="MoneyCounterImage"
+                    BackgroundTransparency={1}
+                    Position={new UDim2(0,0,0.143,0)}
+                    Size={new UDim2(0.25,0,0.25,0)}
+                    SizeConstraint="RelativeXX"
+                    Image={"rbxassetid://6159358790"}/>
+                </frame>
+                
             </screengui>
         )
     }
@@ -137,7 +236,6 @@ class Counter extends Roact.Component<{},counterState> {
                             moneyTotal: state.moneyTotal
                         }
                     })
-                    print(cb)
                 }
                 else {
                     print(`Error receiving callback from server: ${cb}`)
@@ -156,23 +254,6 @@ function playButtonSound(id:string){
     sound.Destroy();
 }
 
-function MoneyCounter() {
-    return (
-        <frame
-        Position={new UDim2(0.065,0,0.892,0)}
-        Size={new UDim2(0,23,0,28)}
-        BackgroundTransparency={1}
-        >
-            <imagebutton
-            Position={new UDim2(0.111,0,0.143,0)}
-            Size={new UDim2(0,27,0,26)}
-            Image="rbxassetid://6159358790"
-            BackgroundTransparency={1}
-            />
-        </frame>
-    )
-}
-
 interface mainUIState {
 }
 
@@ -188,7 +269,6 @@ class MainUI extends Roact.Component<{}, mainUIState> {
         <screengui>
             <Shop/>
             <Counter/>
-            <MoneyCounter/>
         </screengui>
         )
     }
