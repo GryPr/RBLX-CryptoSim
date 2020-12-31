@@ -1,29 +1,15 @@
 import * as ProfileService from "@rbxts/profileservice"
 import { Profile, ProfileStore, ViewProfile } from "@rbxts/profileservice/globals";
+import {PlayerData, ProfileTemplate} from "./types"
 const Players = game.GetService("Players");
-
-type PlayerData = {
-    Money: number,
-    MoneyExp: number,
-    Salt: number,
-    SaltExp: number,
-    Multipliers: Array<number>,
-}
 
 export class DataStore {
 
     Profiles = new Map<Player, Profile<PlayerData>>()
 
-	ProfileTemplate: PlayerData = {
-        Money: 0,
-        MoneyExp: 1,
-        Salt: 0,
-        SaltExp: 1,
-        Multipliers: [1],
-	}
 	profileServ = ProfileService.GetProfileStore(
 		"PlayerData",
-		this.ProfileTemplate
+		ProfileTemplate
 	)
 
 	constructor(){
@@ -53,6 +39,7 @@ export class DataStore {
         if (profile.Data.Salt === undefined) {
             profile.Data.Salt = 0;
         }
+        print(profile)
         let addend = this.calculateSalt(player, clicks)
         profile.Data.Salt += addend;
         // TODO: Deal with exponential
@@ -81,6 +68,18 @@ export class DataStore {
         if (profile.Data.Money === undefined) {
             profile.Data.Money = 0;
         }
+    }
+
+    getMoney(player:Player): void | number {
+        let profile = this.Profiles.get(player);
+        profile?.Reconcile()
+        if (profile === undefined) {
+            return;
+        }
+        if (profile.Data.Money === undefined) {
+            profile.Data.Money = 0;
+        }
+        return profile.Data.Money;
     }
 
     calculateMultiplier(player:Player){
