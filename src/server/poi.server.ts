@@ -8,19 +8,14 @@ for (const obj of CollectionService.GetTagged("SellPoint")) {
 
         obj.Touched.Connect((part) => {
             if (obj.Parent?.IsA("Model") && obj.Parent?.FindFirstAncestorOfClass("Humanoid")){
-                if (Players.GetPlayerFromCharacter(part.Parent) !== undefined){
-                    //let player:Player = Players.GetPlayerFromCharacter(part.Parent);
-
-                }
+                let player:Player = Players.GetPlayerFromCharacter(part.Parent)!;
+                
             }
         })
 
         obj.TouchEnded.Connect((part) => {
             if (obj.Parent?.IsA("Model") && obj.Parent?.FindFirstAncestorOfClass("Humanoid")){
-                if (Players.GetPlayerFromCharacter(part.Parent) !== undefined){
-                    //let player:Player = Players?.GetPlayerFromCharacter(part.Parent);
-
-                }
+                let player:Player = Players?.GetPlayerFromCharacter(part.Parent)!;
             }
         })
 
