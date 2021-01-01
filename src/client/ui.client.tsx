@@ -2,6 +2,7 @@ import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper"
 import { SoundService } from "@rbxts/services";
 import Net from "@rbxts/net";
+import { SciNum, SciNumToolKit } from "shared/scinum";
 
 const Players = game.GetService("Players");
 
@@ -150,8 +151,8 @@ class Shop extends Roact.Component<
 }
 
 interface counterState {
-    saltTotal: number,
-    moneyTotal: number
+    saltTotal: SciNum,
+    moneyTotal: SciNum
 }
 
 class Counter extends Roact.Component<{},counterState> {
@@ -160,8 +161,14 @@ class Counter extends Roact.Component<{},counterState> {
     public constructor(props:{}) {
         super(props);
         this.setState({
-            saltTotal: 0,
-            moneyTotal: 0,
+            saltTotal: {
+                Base: 0,
+                Exponent: 1
+            },
+            moneyTotal: {
+                Base: 0,
+                Exponent: 1
+            },
         })
     }
 
@@ -183,7 +190,7 @@ class Counter extends Roact.Component<{},counterState> {
                     Font="Highway"
                     TextScaled={true}
                     TextXAlignment="Left"
-                    Text={`${this.state.saltTotal}`}/>
+                    Text={`${SciNumToolKit.removeDecimal(this.state.saltTotal.Base, 1)}${getOrderPrefix(this.state.saltTotal.Exponent)}`}/>
 
                     <imagelabel
                     Key="SaltCounterImage"
@@ -208,7 +215,7 @@ class Counter extends Roact.Component<{},counterState> {
                     Font="Highway"
                     TextScaled={true}
                     TextXAlignment="Left"
-                    Text={`${this.state.moneyTotal}`}/>
+                    Text={`${this.state.moneyTotal.Base}${getOrderPrefix(this.state.moneyTotal.Exponent)}`}/>
 
                     <imagelabel
                     Key="MoneyCounterImage"
@@ -227,15 +234,17 @@ class Counter extends Roact.Component<{},counterState> {
         this.running = true;
         let initEvent = new Net.ClientEvent("Init");
         initEvent.SendToServer();
+
+        // Retrieves the salt total from the server
         Net.WaitForClientEventAsync("returnSaltTotal").then(event => {
             event.Connect((cb) => {
-                if (typeIs(cb, "number")) {
-                    this.setState(state => {
-                        return {
-                            saltTotal: cb,
-                            moneyTotal: state.moneyTotal
-                        }
-                    })
+                    if (SciNumToolKit.isSciNum(cb)){
+                        this.setState(state => {
+                            return {
+                                saltTotal: cb,
+                                moneyTotal: state.moneyTotal
+                            }
+                        })
                 }
                 else {
                     print(`Error receiving callback from server: ${cb}`)
@@ -243,6 +252,22 @@ class Counter extends Roact.Component<{},counterState> {
             })
         })
 
+        // Retrieves the money total from the server
+        Net.WaitForClientEventAsync("returnMoneyTotal").then(event => {
+            event.Connect((cb) => {
+                    if (SciNumToolKit.isSciNum(cb)){
+                        this.setState(state => {
+                            return {
+                                saltTotal: state.saltTotal,
+                                moneyTotal: cb
+                            }
+                        })
+                }
+                else {
+                    print(`Error receiving callback from server: ${cb}`)
+                }
+            })
+        })
     }
 }
 
@@ -252,6 +277,28 @@ function playButtonSound(id:string){
     sound.SoundId = id;
     SoundService.PlayLocalSound(sound);
     sound.Destroy();
+}
+
+function getOrderPrefix(n:number):string{
+    let order:number = n;
+    let prefix:string = ``;
+    while (order >= 6){
+        order -= 6;
+        prefix = `${prefix}M`
+    }
+    while (order >= 3){
+        order -= 3;
+        prefix=`k${prefix}`
+    }
+    while (order >= 2){
+        order -= 2;
+        prefix=`h${prefix}`
+    }
+    while (order >= 1){
+        order -= 1;
+        prefix=`d${prefix}`
+    }
+    return prefix;
 }
 
 interface mainUIState {

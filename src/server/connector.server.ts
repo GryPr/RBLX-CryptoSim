@@ -4,10 +4,14 @@ const Players = game.GetService("Players");
 
 const initEvent = new Net.ServerEvent("Init")
 const clickEvent = new Net.ServerThrottledEvent("Click", 600);
+
 const returnSaltAddend = new Net.ServerEvent("returnSaltAddend")
 const returnSaltTotal = new Net.ServerEvent("returnSaltTotal")
+const returnSaltExp = new Net.ServerEvent("returnSaltExp")
+
 const returnMoneyAddend = new Net.ServerEvent("returnMoneyAddend")
 const returnMoneyTotal = new Net.ServerEvent("returnMoneyTotal")
+const returnMoneyExp = new Net.ServerEvent("returnMoneyExp")
 
 clickEvent.Connect((player:Player) => {
     // print(`Server received click by ${player.Name}`);
@@ -15,7 +19,7 @@ clickEvent.Connect((player:Player) => {
     let saltTotal = data.getSalt(player);
     // print(`saltAddend: ${saltAddend} \n saltTotal: ${saltTotal}`)
     if (saltAddend !== undefined && saltTotal !== undefined){
-        returnSaltAddend.SendToPlayer(player, saltAddend);
+        //returnSaltAddend.SendToPlayer(player, saltAddend);
         returnSaltTotal.SendToPlayer(player, saltTotal);
     }
     else {
@@ -25,13 +29,20 @@ clickEvent.Connect((player:Player) => {
 
 initEvent.Connect((player:Player) => {
     print(`Initiating session for ${player.Name}`)
-    wait(0.5)
-    let saltTotal = data.getSalt(player);
-    if (saltTotal !== undefined){
+
+    let promise = new Promise((resolve, reject) => {
+        while (true) {
+            wait(0.2)
+            if (data.getSalt(player) !== undefined && data.getMoney(player) !== undefined){
+                resolve(true)
+            }
+        }
+    })
+
+    promise.then(() => {
+        let saltTotal = data.getSalt(player);
+        let moneyTotal = data.getMoney(player);
         returnSaltTotal.SendToPlayer(player, saltTotal);
-    }
-    let moneyTotal = data.getMoney(player);
-    if (moneyTotal !== undefined){
         returnMoneyTotal.SendToPlayer(player, moneyTotal);
-    }
+    })
 })

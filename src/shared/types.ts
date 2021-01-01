@@ -15,14 +15,14 @@ export type PlayerData = {
 export const ProfileTemplate: PlayerData = {
     Money: {
         Base: 0,
-        Exponent: 1
+        Exponent: 0
     },
     Salt: {
         Base: 0,
-        Exponent: 1
+        Exponent: 0
     },
     Multipliers: [{
         Base: 1,
-        Exponent: 1
+        Exponent: 0
     }],
 }

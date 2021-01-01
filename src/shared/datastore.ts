@@ -39,13 +39,12 @@ export class DataStore {
         if (profile.Data.Salt === undefined) {
             profile.Data.Salt = {
                 Base: 0,
-                Exponent: 1,
+                Exponent: 0
             };
         }
-        print(profile)
-        let addend = this.calculateSalt(player, {Base: clicks, Exponent: 1})
+        let addend = this.calculateSalt(player, {Base: clicks, Exponent: 0})
         profile.Data.Salt = SciNumToolKit.add(profile.Data.Salt, addend);
-        // TODO: Deal with exponential
+        print(profile.Data)
         return addend;
     }
 
@@ -58,23 +57,11 @@ export class DataStore {
         if (profile.Data.Salt === undefined) {
             profile.Data.Salt = {
                 Base: 0,
-                Exponent: 1,
+                Exponent: 0
             };
         }
         return profile.Data.Salt;
     }
-
-    // getSaltExp(player:Player): void | number {
-    //     let profile = this.Profiles.get(player);
-    //     profile?.Reconcile()
-    //     if (profile === undefined) {
-    //         return;
-    //     }
-    //     if (profile.Data.SaltExp === undefined) {
-    //         profile.Data.SaltExp = 1;
-    //     }
-    //     return profile.Data.SaltExp;
-    // }
 
     sellSalt(player:Player): void | number {
         let profile = this.Profiles.get(player);
@@ -85,11 +72,10 @@ export class DataStore {
         if (profile.Data.Salt === undefined) {
             profile.Data.Salt = {
                 Base: 0,
-                Exponent: 1
+                Exponent: 0
             };
             return;
         }
-        // let salt:number = profile.Data.Salt;
     }
 
     addMoney(player:Player, money:number){
@@ -100,7 +86,7 @@ export class DataStore {
         if (profile.Data.Money === undefined) {
             profile.Data.Money = {
                 Base: 0,
-                Exponent: 1
+                Exponent: 0
             };
         }
     }
@@ -114,7 +100,7 @@ export class DataStore {
         if (profile.Data.Money === undefined) {
             profile.Data.Money = {
                 Base: 0,
-                Exponent: 1
+                Exponent: 0
             };
         }
         return profile.Data.Money;
@@ -124,14 +110,14 @@ export class DataStore {
         let profile = this.Profiles.get(player);
         let multiplier:SciNum = {
             Base: 1,
-            Exponent: 1
+            Exponent: 0
         };
         profile?.Data.Multipliers.forEach((element) => {multiplier=SciNumToolKit.multiply(multiplier, element)});
         return multiplier;
     }
 
     calculateSalt(player:Player, salt:SciNum) {
-        return SciNumToolKit.multiply(this.calculateMultiplier(player),salt);
+        return SciNumToolKit.multiply(this.calculateMultiplier(player), salt);
     }
 }
 

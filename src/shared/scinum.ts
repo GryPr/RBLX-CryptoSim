@@ -23,7 +23,7 @@ class SciNumKit {
             }
         } else if (a2.Exponent > a1.Exponent){
             sum = this.add(a2,a1);
-        } else if (a1.Exponent == a2.Exponent){
+        } else if (a1.Exponent === a2.Exponent){
             sum.Base = a1.Base + a2.Base;
             sum.Exponent = a1.Exponent
         }
@@ -87,11 +87,16 @@ class SciNumKit {
 
     // Get the order of magnitude of a number
     order(n:number):number{
-        var order:number = math.floor(math.log(n) / math.log(10) + 0.000000001);
+        if (n === 0) {
+            return 0;
+        }
+        let order:number = math.floor(math.log(n) / math.log(10) + 0.000000001);
         return order;
     }
     // Simplifies scientific notation to order of magnitude of 2
     truncate(n:SciNum):SciNum{
+        let magnitude:number = 1;
+        let minimumToSci:number = 6;
         let truncated:SciNum = {
             Base: n.Base,
             Exponent: n.Exponent
@@ -101,19 +106,28 @@ class SciNumKit {
             wasNegative = true;
             n.Base *= -1;
         }
-        if (this.order(n.Base) > 0) {
-            truncated.Base = truncated.Base / math.pow(10, this.order(n.Base) - 0);
-            truncated.Exponent = truncated.Exponent + this.order(n.Base) - 0
-        } else if (this.order(n.Base) < 0) {
-            truncated.Base = truncated.Base * math.pow(10, this.order(n.Base) - 0);
-            truncated.Exponent = truncated.Exponent - this.order(n.Base) - 0
+        if (n.Base === 0) {
+            return n;
         }
+        if (this.order(n.Base) <= minimumToSci && n.Exponent <= (minimumToSci-magnitude)) {
+            return n;
+        }
+        if (this.order(n.Base) > magnitude) {
+            truncated.Base = truncated.Base / (math.pow(10, this.order(n.Base) - magnitude));
+            truncated.Exponent = truncated.Exponent + this.order(n.Base) - magnitude
+        } 
         // Truncate to two decimal places
-        truncated.Base = math.floor(truncated.Base*100)/100
-        if (wasNegative) {
-            //truncated.Base *= -1;
-        }
+        truncated.Base = math.floor(truncated.Base*100000)/100000
         return truncated;
+    }
+
+    removeDecimal(n:number, places:number):number {
+        return math.floor(n*math.pow(10,places))/(math.pow(10,places))
+    }
+
+    // Type-guard for SciNum
+    isSciNum(obj:any): obj is SciNum {
+        return (obj as SciNum).Base !== undefined && (obj as SciNum).Exponent !== undefined;
     }
 }
 
