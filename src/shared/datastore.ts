@@ -7,15 +7,18 @@ const Players = game.GetService("Players");
 export class DataStore {
 
     Profiles = new Map<Player, Profile<PlayerData>>()
+    CachedProfiles = new Map<Player, PlayerData>()
 
 	profileServ = ProfileService.GetProfileStore(
-		"PlayerData",
+		"PlayerData_2",
 		ProfileTemplate
 	)
 
 	constructor(){}
 
 	playerAdded(player:Player){
+        
+        // Setting up the ProfileService profiles
 		let profile = this.profileServ.LoadProfileAsync(
 			`Player_${player.UserId}`,
 			"ForceLoad"
@@ -23,54 +26,71 @@ export class DataStore {
         if (profile === undefined) {
             return
         }
-		this.Profiles.set(player, profile)
+        profile?.Reconcile();
+        this.Profiles.set(player, profile);
+        
+        // Setting up the profile cache
+        let cachedProfile:PlayerData = {
+            Money: profile.Data.Money,
+            Salt: profile.Data.Salt,
+            Multipliers: profile.Data.Multipliers
+        }
+        this.CachedProfiles.set(player, cachedProfile);
 	}
 
 	playerRemoved(player:Player){
-		this.Profiles.delete(player)
+        this.playerSaveData(player);
+        this.CachedProfiles.delete(player);
+        this.Profiles.delete(player);
+    }
+
+    playerSaveData(player:Player){
+        print(`Saving data of ${player.Name}`)
+        let profile = this.Profiles.get(player)!;
+        let cachedProfile = this.CachedProfiles.get(player)!;
+        profile?.Reconcile()
+        profile.Data = {
+            Money: cachedProfile.Money,
+            Salt: cachedProfile.Salt,
+            Multipliers: cachedProfile.Multipliers
+        }
     }
     
     addSalt(player:Player, clicks:number): void | SciNum {
-        let profile = this.Profiles.get(player);
-        profile?.Reconcile()
+        let profile = this.CachedProfiles.get(player);
         if (profile === undefined) {
             return;
         }
-        if (profile.Data.Salt === undefined) {
-            profile.Data.Salt = {
+        if (profile.Salt === undefined) {
+            profile.Salt = {
                 Base: 0,
                 Exponent: 0
             };
         }
         let addend = this.calculateSalt(player, {Base: clicks, Exponent: 0})
-        profile.Data.Salt = SciNumToolKit.add(profile.Data.Salt, addend);
-        print(profile.Data)
+        profile.Salt = SciNumToolKit.add(profile.Salt, addend);
+        print(profile)
         return addend;
     }
 
     getSalt(player:Player): void | SciNum {
-        let profile = this.Profiles.get(player);
-        profile?.Reconcile()
+        let profile = this.CachedProfiles.get(player);
         if (profile === undefined) {
             return;
         }
-        if (profile.Data.Salt === undefined) {
-            profile.Data.Salt = {
+        if (profile.Salt === undefined) {
+            profile.Salt = {
                 Base: 0,
                 Exponent: 0
             };
         }
-        return profile.Data.Salt;
+        return profile.Salt;
     }
 
     sellSalt(player:Player): void | number {
-        let profile = this.Profiles.get(player);
-        profile?.Reconcile();
-        if (profile === undefined) {
-            return;
-        }
-        if (profile.Data.Salt === undefined) {
-            profile.Data.Salt = {
+        let profile = this.CachedProfiles.get(player)!;
+        if (profile.Salt === undefined) {
+            profile.Salt = {
                 Base: 0,
                 Exponent: 0
             };
@@ -79,12 +99,12 @@ export class DataStore {
     }
 
     addMoney(player:Player, money:number){
-        let profile = this.Profiles.get(player)
+        let profile = this.CachedProfiles.get(player)!;
         if (profile === undefined) {
             return;
         }
-        if (profile.Data.Money === undefined) {
-            profile.Data.Money = {
+        if (profile.Money === undefined) {
+            profile.Money = {
                 Base: 0,
                 Exponent: 0
             };
@@ -92,32 +112,41 @@ export class DataStore {
     }
 
     getMoney(player:Player): void | SciNum {
-        let profile = this.Profiles.get(player);
-        profile?.Reconcile()
+        let profile = this.CachedProfiles.get(player);
         if (profile === undefined) {
             return;
         }
-        if (profile.Data.Money === undefined) {
-            profile.Data.Money = {
+        if (profile.Money === undefined) {
+            profile.Money = {
                 Base: 0,
                 Exponent: 0
             };
         }
-        return profile.Data.Money;
+        return profile.Money;
     }
 
-    calculateMultiplier(player:Player){
-        let profile = this.Profiles.get(player);
+    calculateSaltMultiplier(player:Player){
+        let profile = this.CachedProfiles.get(player);
         let multiplier:SciNum = {
             Base: 1,
             Exponent: 0
         };
-        profile?.Data.Multipliers.forEach((element) => {multiplier=SciNumToolKit.multiply(multiplier, element)});
+        profile?.Multipliers.forEach((element) => {multiplier=SciNumToolKit.multiply(multiplier, element.SaltMultiplier)});
         return multiplier;
     }
 
     calculateSalt(player:Player, salt:SciNum) {
-        return SciNumToolKit.multiply(this.calculateMultiplier(player), salt);
+        return SciNumToolKit.multiply(this.calculateSaltMultiplier(player), salt);
+    }
+
+    calculateMoneyMultiplier(player:Player){
+        let profile = this.CachedProfiles.get(player);
+        let multiplier:SciNum = {
+            Base: 1,
+            Exponent: 0
+        };
+        profile?.Multipliers.forEach((element) => {multiplier=SciNumToolKit.multiply(multiplier, element.MoneyMultiplier)});
+        return multiplier;
     }
 }
 

@@ -13,6 +13,8 @@ const returnMoneyAddend = new Net.ServerEvent("returnMoneyAddend")
 const returnMoneyTotal = new Net.ServerEvent("returnMoneyTotal")
 const returnMoneyExp = new Net.ServerEvent("returnMoneyExp")
 
+const saveGame = new Net.ServerEvent("Save")
+
 clickEvent.Connect((player:Player) => {
     // print(`Server received click by ${player.Name}`);
     let saltAddend = data.addSalt(player, 1);
@@ -45,4 +47,8 @@ initEvent.Connect((player:Player) => {
         returnSaltTotal.SendToPlayer(player, saltTotal);
         returnMoneyTotal.SendToPlayer(player, moneyTotal);
     })
+})
+
+saveGame.Connect((player:Player) => {
+    data.playerSaveData(player);
 })

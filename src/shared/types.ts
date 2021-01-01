@@ -3,13 +3,19 @@ import { SciNum } from "./scinum"
 export type Pet = {
     Name: string,
     SaltMultiplier: SciNum,
-    MoneyMultiplier: SciNum,
+    MoneyMultiplier: SciNum
+}
+
+export type Multiplier = {
+    Key: string,
+    SaltMultiplier: SciNum,
+    MoneyMultiplier: SciNum
 }
 
 export type PlayerData = {
     Money: SciNum,
     Salt: SciNum,
-    Multipliers: Array<SciNum>
+    Multipliers: Array<Multiplier>
 }
 
 export const ProfileTemplate: PlayerData = {
@@ -22,7 +28,14 @@ export const ProfileTemplate: PlayerData = {
         Exponent: 0
     },
     Multipliers: [{
-        Base: 1,
-        Exponent: 0
+        Key: "Base",
+        SaltMultiplier: {
+            Base: 1,
+            Exponent: 0
+        },
+        MoneyMultiplier: {
+            Base: 1,
+            Exponent: 0
+        }
     }],
 }

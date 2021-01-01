@@ -18,4 +18,10 @@ function Click() {
     localMouse.Button1Up.Connect(() => {running = false})
 }
 
+spawn(() => {
+    while (true) {
+        wait(10)
+        client.saveGame();
+    }
+})
 
