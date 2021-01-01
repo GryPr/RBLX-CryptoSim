@@ -1,6 +1,7 @@
 import * as ProfileService from "@rbxts/profileservice"
 import { Profile, ProfileStore, ViewProfile } from "@rbxts/profileservice/globals";
 import {PlayerData, ProfileTemplate} from "./types"
+import {SciNum, SciNumToolKit} from "./scinum"
 const Players = game.GetService("Players");
 
 export class DataStore {
@@ -12,8 +13,7 @@ export class DataStore {
 		ProfileTemplate
 	)
 
-	constructor(){
-	}
+	constructor(){}
 
 	playerAdded(player:Player){
 		let profile = this.profileServ.LoadProfileAsync(
@@ -30,34 +30,66 @@ export class DataStore {
 		this.Profiles.delete(player)
     }
     
-    addSalt(player:Player, clicks:number): void | number {
+    addSalt(player:Player, clicks:number): void | SciNum {
         let profile = this.Profiles.get(player);
         profile?.Reconcile()
         if (profile === undefined) {
             return;
         }
         if (profile.Data.Salt === undefined) {
-            profile.Data.Salt = 0;
+            profile.Data.Salt = {
+                Base: 0,
+                Exponent: 1,
+            };
         }
         print(profile)
-        let addend = this.calculateSalt(player, clicks)
-        profile.Data.Salt += addend;
+        let addend = this.calculateSalt(player, {Base: clicks, Exponent: 1})
+        profile.Data.Salt = SciNumToolKit.add(profile.Data.Salt, addend);
         // TODO: Deal with exponential
-        if (profile.Data.Salt > 10) {
-        }
         return addend;
     }
 
-    getSalt(player:Player): void | number {
+    getSalt(player:Player): void | SciNum {
         let profile = this.Profiles.get(player);
         profile?.Reconcile()
         if (profile === undefined) {
             return;
         }
         if (profile.Data.Salt === undefined) {
-            profile.Data.Salt = 0;
+            profile.Data.Salt = {
+                Base: 0,
+                Exponent: 1,
+            };
         }
         return profile.Data.Salt;
+    }
+
+    // getSaltExp(player:Player): void | number {
+    //     let profile = this.Profiles.get(player);
+    //     profile?.Reconcile()
+    //     if (profile === undefined) {
+    //         return;
+    //     }
+    //     if (profile.Data.SaltExp === undefined) {
+    //         profile.Data.SaltExp = 1;
+    //     }
+    //     return profile.Data.SaltExp;
+    // }
+
+    sellSalt(player:Player): void | number {
+        let profile = this.Profiles.get(player);
+        profile?.Reconcile();
+        if (profile === undefined) {
+            return;
+        }
+        if (profile.Data.Salt === undefined) {
+            profile.Data.Salt = {
+                Base: 0,
+                Exponent: 1
+            };
+            return;
+        }
+        // let salt:number = profile.Data.Salt;
     }
 
     addMoney(player:Player, money:number){
@@ -66,31 +98,40 @@ export class DataStore {
             return;
         }
         if (profile.Data.Money === undefined) {
-            profile.Data.Money = 0;
+            profile.Data.Money = {
+                Base: 0,
+                Exponent: 1
+            };
         }
     }
 
-    getMoney(player:Player): void | number {
+    getMoney(player:Player): void | SciNum {
         let profile = this.Profiles.get(player);
         profile?.Reconcile()
         if (profile === undefined) {
             return;
         }
         if (profile.Data.Money === undefined) {
-            profile.Data.Money = 0;
+            profile.Data.Money = {
+                Base: 0,
+                Exponent: 1
+            };
         }
         return profile.Data.Money;
     }
 
     calculateMultiplier(player:Player){
         let profile = this.Profiles.get(player);
-        let multiplier:number = 1;
-        profile?.Data.Multipliers.forEach((element) => {multiplier*=element});
+        let multiplier:SciNum = {
+            Base: 1,
+            Exponent: 1
+        };
+        profile?.Data.Multipliers.forEach((element) => {multiplier=SciNumToolKit.multiply(multiplier, element)});
         return multiplier;
     }
 
-    calculateSalt(player:Player, salt:number) {
-        return this.calculateMultiplier(player)*salt;
+    calculateSalt(player:Player, salt:SciNum) {
+        return SciNumToolKit.multiply(this.calculateMultiplier(player),salt);
     }
 }
 
