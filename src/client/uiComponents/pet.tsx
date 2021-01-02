@@ -6,10 +6,6 @@ import { PetRenderer } from "shared/items/pets";
 
 class PetInventoryButton extends Roact.Component<{onClick:() => void},{}> {
 
-    // public constructor() {
-    //     super({})
-    // }
-
     public render(): Roact.Element {
         return <textbutton 
         Size={new UDim2(0,100,0,100)}
