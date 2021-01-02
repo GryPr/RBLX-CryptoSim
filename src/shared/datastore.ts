@@ -10,7 +10,7 @@ export class DataStore {
     CachedProfiles = new Map<Player, PlayerData>()
 
 	profileServ = ProfileService.GetProfileStore(
-		"PlayerData_2",
+		"PlayerData_Test_1",
 		ProfileTemplate
 	)
 
@@ -33,7 +33,8 @@ export class DataStore {
         let cachedProfile:PlayerData = {
             Money: profile.Data.Money,
             Salt: profile.Data.Salt,
-            Multipliers: profile.Data.Multipliers
+            Multipliers: profile.Data.Multipliers,
+            Limit: profile.Data.Limit
         }
         this.CachedProfiles.set(player, cachedProfile);
 	}
@@ -52,7 +53,8 @@ export class DataStore {
         profile.Data = {
             Money: cachedProfile.Money,
             Salt: cachedProfile.Salt,
-            Multipliers: cachedProfile.Multipliers
+            Multipliers: cachedProfile.Multipliers,
+            Limit: cachedProfile.Limit
         }
     }
     
