@@ -1,6 +1,6 @@
 import { SciNum } from "../../scinum"
 import { Pet } from "../types"
-const petList: Array<Pet> = [
+export const petList: Array<Pet> = [
     {
         Name: "Starter",
         id: 1,
