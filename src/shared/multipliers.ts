@@ -1,5 +1,1 @@
-
-
-export class MultiplierKit {
-    
-}
+export class MultiplierKit {}

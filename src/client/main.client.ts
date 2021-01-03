@@ -1,1 +1,1 @@
-import * as Roact from "@rbxts/roact"
+import * as Roact from "@rbxts/roact";
