@@ -79,7 +79,6 @@ export class EphemeralClick extends Roact.Component<ephemeralClickProps, ephemer
             frequency: 1,
             dampingRatio: 1
         }))
-        wait(1)
         spawn(() => {
             while (this.state.transparency < 1) {
                 wait(0.1)
