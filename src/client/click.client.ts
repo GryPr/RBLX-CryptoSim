@@ -4,7 +4,7 @@ const localPlayer = Players.LocalPlayer
 const localMouse = localPlayer.GetMouse()
 
 // Detects clicks
-localMouse.Button1Down.Connect(() => client.playerClick());
+localMouse.Button1Down.Connect(() => Click());
 
 // TODO: Check that it doesnt' get stuck on mobile
 function Click() {
@@ -12,7 +12,7 @@ function Click() {
     spawn(() => {
         while (running) {
             client.playerClick();
-            wait(0.1)
+            wait(0.2)
         }
     })
     localMouse.Button1Up.Connect(() => {running = false})
@@ -24,4 +24,3 @@ spawn(() => {
         client.saveGame();
     }
 })
-
