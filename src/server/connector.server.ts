@@ -23,6 +23,7 @@ clickEvent.Connect((player:Player) => {
     if (saltAddend !== undefined && saltTotal !== undefined){
         //returnSaltAddend.SendToPlayer(player, saltAddend);
         returnSaltTotal.SendToPlayer(player, saltTotal);
+        returnSaltAddend.SendToPlayer(player, saltAddend);
     }
     else {
         print("saltAddend and/or saltTotal are undefined")

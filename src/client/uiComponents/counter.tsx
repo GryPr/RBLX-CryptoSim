@@ -2,6 +2,13 @@ import { SciNum, SciNumToolKit } from "shared/scinum";
 import * as Roact from "@rbxts/roact";
 import { getOrderPrefix } from "./utils"
 import Net from "@rbxts/net";
+import { EphemeralClick } from "./scorePopUp"
+
+const Players = game.GetService("Players");
+
+const PlayerGui = Players.LocalPlayer!.FindFirstChildOfClass(
+    "PlayerGui",
+);
 
 interface counterState {
     saltTotal: SciNum,
@@ -117,6 +124,22 @@ export class Counter extends Roact.Component<{},counterState> {
                         })
                 }
                 else {
+                    print(`Error receiving callback from server: ${cb}`)
+                }
+            })
+        })
+
+
+        // Retrieves the salt total from the server
+        Net.WaitForClientEventAsync("returnSaltAddend").then(event => {
+            event.Connect((cb) => {
+                    if (SciNumToolKit.isSciNum(cb)){
+                        spawn(() => {
+                            let popUp = Roact.mount(<EphemeralClick addend={cb}/>, PlayerGui, "EphemeralClick");
+                            wait(2);
+                            Roact.unmount(popUp);
+                        })
+                    } else {
                     print(`Error receiving callback from server: ${cb}`)
                 }
             })
