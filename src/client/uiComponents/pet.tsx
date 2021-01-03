@@ -2,10 +2,13 @@ import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper"
 import Net from "@rbxts/net";
 import { SciNum, SciNumToolKit } from "shared/scinum";
-import { PetRenderer } from "shared/items/pets";
+import { PetRendererTool } from "shared/items/pets";
 import { Pet } from "shared/items/types";
-import { Workspace, RunService, TweenService } from "@rbxts/services"
+import { Workspace, RunService, TweenService, ReplicatedStorage } from "@rbxts/services"
 import { GreyTextButton } from "./misc"
+
+const Players = game.GetService("Players");
+const player = Players.LocalPlayer;
 
  interface petInventoryState {
      inventoryVisible: boolean;
@@ -76,7 +79,7 @@ import { GreyTextButton } from "./misc"
                         </uigridlayout>
                         {this.props.petInventoryList.map((item, index) => {
                             return (
-                                <PetInventoryItem Key={`${index + 1}`} onClick={() => this.toggle()}></PetInventoryItem>
+                                <PetInventoryItem Key={`${index + 1}`} onClick={() => this.toggle()} petId={item.id}></PetInventoryItem>
                             // <textbutton Key={index} Text={item.Name}></textbutton>
                                 )
                         })}
@@ -104,6 +107,7 @@ import { GreyTextButton } from "./misc"
 
 interface petInventoryItemProps {
     onclick: any,
+    petId: number
 }
 
 interface petInventoryItemStates {
@@ -115,23 +119,35 @@ class PetInventoryItem extends Roact.Component<petInventoryItemProps, petInvento
     
     currentCamera: Camera = new Instance("Camera");
     viewportRef:Roact.Ref<ViewportFrame>;
-    model: Model = this.getModel()!;
+    model: Model;
 
     public constructor(props: any){
         super(props);
 
         this.viewportRef = Roact.createRef<ViewportFrame>()
         this.currentCamera.CameraType = Enum.CameraType.Scriptable;
+        print(this.props.petId)
+
+        this.model = this.getModel(this.props.petId)!;
         
-        this.model.MoveTo(new Vector3(0,0,0));
         this.setState({
             viewportCFrame: new CFrame(new Vector3(0,1000,0)).mul(CFrame.Angles(0, math.rad(0), 0)),
             rotation: 0,
         })
     }
 
-    getModel(): Model | undefined {
-        let model:Instance = Workspace.WaitForChild("Pet")! // placeholder
+    getModel(petId:number): Model | undefined {
+
+        let petFolder = ReplicatedStorage.FindFirstChild(`PetModels`);
+        if (petFolder === undefined) {
+            return;
+        }
+
+        let model = petFolder.FindFirstChild(`${petId}`);
+        if (model === undefined) {
+            return;
+        }
+
         if (model.IsA("Model")) {
             let newModel:Model = model.Clone();
             let primaryPart = newModel.FindFirstChild("PrimaryPart")!;
@@ -165,6 +181,13 @@ class PetInventoryItem extends Roact.Component<petInventoryItemProps, petInvento
         return (
             <imagelabel Image={"rbxassetid://6182082398"} BackgroundTransparency={1}>
             <viewportframe CurrentCamera={this.currentCamera} Ref={this.viewportRef} Size={new UDim2(1,0,1,0)} BackgroundTransparency={1}>
+                <textbutton Text={``} BackgroundTransparency={1} Size={new UDim2(1,0,1,0)} Event={
+                    {MouseButton1Down: () => {
+                        PetRendererTool.createPet(player, this.props.petId, 0.1);
+                    }}
+                }>
+
+                </textbutton>
             </viewportframe>
             </imagelabel>
 )

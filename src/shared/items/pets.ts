@@ -1,6 +1,6 @@
-import { ServerStorage, Workspace } from "@rbxts/services";
+import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
-export class PetRenderer {
+class PetRenderer {
 
     constructor(){}
 
@@ -11,6 +11,7 @@ export class PetRenderer {
             playerPetFolder = character.FindFirstChild(`playerPetFolder`)!
         } else {
             playerPetFolder = new Instance("Model", character);
+            playerPetFolder.Name = `playerPetFolder`;
         }
         if (playerPetFolder.IsA("Model")){
             return playerPetFolder;
@@ -19,10 +20,10 @@ export class PetRenderer {
         }
     }
 
-    createPet(player:Player, petId:number){
+    createPet(player:Player, petId:number, updateCooldown:number){
         let character:Model = player.Character!;
 
-        let petFolder = ServerStorage.FindFirstChild(`PetModels`);
+        let petFolder = ReplicatedStorage.FindFirstChild(`PetModels`);
         if (petFolder === undefined) {
             return;
         }
@@ -37,60 +38,75 @@ export class PetRenderer {
             return;
         }
         petInstance = petModel.Clone();
+        let humRootPart = character.WaitForChild("HumanoidRootPart");
+        if (humRootPart.IsA("BasePart")){
+            print("moving")
+            let primaryPart = petInstance.FindFirstChild("PrimaryPart")!;
+            if (primaryPart.IsA("MeshPart") || primaryPart.IsA("Part")){
+                petInstance.PrimaryPart = primaryPart;
+            }
+            petInstance.SetPrimaryPartCFrame(new CFrame(humRootPart.Position))
+        }
 
         let playerPetFolder:Model = this.findPetFolder(player)!;
         
         petInstance.Parent = playerPetFolder;
 
+        this.animatePet(player, petInstance, 0.01)
+        
     }
 
-    animatePet(player:Player, updateCooldown:number){
-        let running:boolean=false;
+    weldPet(model:Model){
+        for(let part of model.GetChildren()) {
+            if (part.IsA("BasePart") || part.IsA("MeshPart")) {
 
-        player.CharacterAdded.Connect(() => {
-            running = true;
-            spawn(() => {
-                let character:Model = player.Character || player.CharacterAdded.Wait()[0];
-                let playerPetFolder:Model = this.findPetFolder(player)!;
+            }
+        }
+    }
 
-                let counter = 0;
+    // animatePet(player:Player, pet:Model, updateCooldown:number){
+    //     let running:boolean = true;
+    //     spawn(() => {
+    //         let humanoidRoot = player.Character!.WaitForChild("HumanoidRootPart")!;
+    //         if (humanoidRoot.IsA("Part")) {
+    //             while (running === true) {
+    //                 wait(updateCooldown)
+    //                 pet.SetPrimaryPartCFrame(humanoidRoot.CFrame.mul(new CFrame(2,2,-3)))
+    //             }
+    //         }
+    //     })
+    //     player.CharacterRemoving.Connect(() => {
+    //         running = false;
+    //     })
+    // }
 
-                for (let pet of playerPetFolder.GetChildren()){
-                    counter += 1;
-                    if (pet.IsA("Model")){
 
-                        spawn(() => {
-                            let bodyPos = new Instance("BodyPosition", pet);
-                            bodyPos.MaxForce = new Vector3(math.huge, math.huge, math.huge);
+    animatePet(player:Player, pet:Model, updateCooldown:number){
+        let running:boolean=true;
+        let character:Model = player.Character || player.CharacterAdded.Wait()[0];
 
-                            let bodyGyro = new Instance("BodyGyro", pet);
-                            bodyGyro.MaxTorque = new Vector3(math.huge, math.huge, math.huge);
+        spawn(() => {
+            let bodyPos = new Instance("BodyPosition", pet.PrimaryPart);
+            bodyPos.MaxForce = new Vector3(math.huge, math.huge, math.huge);
 
-                            let humRootPart = character.WaitForChild("HumanoidRootPart");
+            let bodyGyro = new Instance("BodyGyro", pet.PrimaryPart);
+            bodyGyro.MaxTorque = new Vector3(math.huge, math.huge, math.huge);
 
-                            let variation = counter+1;
+            let humRootPart = character.WaitForChild("HumanoidRootPart");
 
-                            if (humRootPart.IsA("BasePart")){
-                                while(running === true){
-                                    wait(updateCooldown)
-                                    bodyPos.Position = humRootPart.Position.add(new Vector3(2+variation,2+variation,3));
-                                    bodyGyro.CFrame = humRootPart.CFrame;
-                                }
-                            }
-                        })
-
-                    }
-                    else {
-                        continue;
-                    }
+            if (humRootPart.IsA("BasePart")){
+                while(running === true){
+                    wait(updateCooldown)
+                    bodyPos.Position = new Vector3(5,3,5).add(humRootPart.Position);
+                    bodyGyro.CFrame = humRootPart.CFrame;
                 }
-
-            })
+            }
         })
-
+        
         player.CharacterRemoving.Connect(() => {
             running = false;
         })
-
     }
 }
+
+export let PetRendererTool:PetRenderer = new PetRenderer();
