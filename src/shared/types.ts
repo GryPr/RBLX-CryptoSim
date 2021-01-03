@@ -1,5 +1,6 @@
 import { SciNum } from "./scinum"
 import { Limit } from "./items/types"
+import { Pet } from "./items/types"
 
 export type Multiplier = {
     Key: string,
@@ -11,7 +12,8 @@ export type PlayerData = {
     Money: SciNum,
     Salt: SciNum,
     Multipliers: Array<Multiplier>,
-    Limit: Limit
+    Limit: Limit,
+    //PetInventory: Array<Pet>
 }
 
 export const ProfileTemplate: PlayerData = {
@@ -37,5 +39,6 @@ export const ProfileTemplate: PlayerData = {
     Limit: {
         hasLimit: true,
         limitUpgradeId: 1
-    }
+    },
+    //PetInventory: []
 }

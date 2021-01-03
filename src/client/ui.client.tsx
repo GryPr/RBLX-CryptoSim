@@ -1,6 +1,7 @@
 import * as Roact from "@rbxts/roact";
 import { PetInventory } from "./uiComponents/pet"
 import { Counter } from "./uiComponents/counter" 
+import { testPetInventory } from "./testValues/testPetInventory"
 
 const Players = game.GetService("Players");
 
@@ -23,7 +24,7 @@ class MainUI extends Roact.Component<{}, mainUIState> {
         <screengui>
             {/* <Shop/> */}
             <Counter/>
-            <PetInventory/>
+            <PetInventory petInventoryList={ testPetInventory }/>
         </screengui>
         )
     }
