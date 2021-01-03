@@ -56,31 +56,6 @@ class PetRenderer {
         
     }
 
-    weldPet(model:Model){
-        for(let part of model.GetChildren()) {
-            if (part.IsA("BasePart") || part.IsA("MeshPart")) {
-
-            }
-        }
-    }
-
-    // animatePet(player:Player, pet:Model, updateCooldown:number){
-    //     let running:boolean = true;
-    //     spawn(() => {
-    //         let humanoidRoot = player.Character!.WaitForChild("HumanoidRootPart")!;
-    //         if (humanoidRoot.IsA("Part")) {
-    //             while (running === true) {
-    //                 wait(updateCooldown)
-    //                 pet.SetPrimaryPartCFrame(humanoidRoot.CFrame.mul(new CFrame(2,2,-3)))
-    //             }
-    //         }
-    //     })
-    //     player.CharacterRemoving.Connect(() => {
-    //         running = false;
-    //     })
-    // }
-
-
     animatePet(player:Player, pet:Model, updateCooldown:number){
         let running:boolean=true;
         let character:Model = player.Character || player.CharacterAdded.Wait()[0];
