@@ -38,13 +38,13 @@ import { GreyTextButton } from "./misc"
         })
         if (this.state.inventoryVisible === true) {
             this.inventoryMotor.setGoal(new Flipper.Spring(0, {
-                frequency: 5,
-                dampingRatio: 1
+                frequency: 1,
+                dampingRatio: 0.5
             }))
         } else {
             this.inventoryMotor.setGoal(new Flipper.Spring(1, {
-                frequency: 5,
-                dampingRatio: 1
+                frequency: 2,
+                dampingRatio: 0.8
             }))
         }
     }
@@ -148,7 +148,7 @@ class PetInventoryItem extends Roact.Component<petInventoryItemProps, petInvento
     getMaxDistance(): number {
         let model:Model = this.model;
         let size:Vector3 = model.GetBoundingBox()[1];
-        return math.max(size.X, size.Y, size.Z);
+        return math.max(size.X, size.Y, size.Z) + 1;
     }
 
     renderModel(){
