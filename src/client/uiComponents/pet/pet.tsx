@@ -3,8 +3,8 @@ import * as Flipper from "@rbxts/flipper";
 import { PetRendererTool } from "shared/items/pets";
 import { Pet } from "shared/items/types";
 import { RunService, ReplicatedStorage } from "@rbxts/services";
-import { GreyTextButton } from "./misc";
-import { mainContext } from "./mainView";
+import { GreyTextButton } from "../misc";
+import { mainContext } from "../mainView";
 
 const Players = game.GetService("Players");
 const player = Players.LocalPlayer;

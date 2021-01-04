@@ -1,8 +1,8 @@
 import { SciNum, SciNumToolKit } from "shared/scinum";
 import * as Roact from "@rbxts/roact";
-import { getOrderPrefix } from "./utils";
+import { getOrderPrefix } from "../utils";
 import Net from "@rbxts/net";
-import { EphemeralClick } from "./scorePopUp";
+import { EphemeralClick } from "../scorePopUp";
 
 const Players = game.GetService("Players");
 

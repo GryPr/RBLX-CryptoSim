@@ -1,7 +1,8 @@
 import * as Roact from "@rbxts/roact";
-import { PetInventory } from "./pet";
-import { Counter } from "./counter";
+import { PetInventory } from "./pet/pet";
+import { Counter } from "./counter/counter";
 import { testPetInventory } from "../testValues/testPetInventory";
+import { GreyTextButton } from "./misc";
 
 export const mainContext = Roact.createContext({
   viewIndex: 0,
@@ -43,4 +44,29 @@ export class MainUI extends Roact.Component<{}, mainUIState> {
   }
 
   public didMount() {}
+}
+
+export class UI extends Roact.Component<{}, mainUIState> {
+  constructor(props: {}) {
+    super(props);
+    this.setState({
+      viewIndex: 0,
+    });
+  }
+
+  changeViewIndex(index: number) {
+    this.setState({
+      viewIndex: index,
+    });
+  }
+
+  public render(): Roact.Element {
+    return (
+      <screengui Key={"MainUI"}>
+        <GreyTextButton Key="PetInventoryButton"></GreyTextButton>
+
+        <GreyTextButton Key="ClickUpgradeButton"></GreyTextButton>
+      </screengui>
+    );
+  }
 }
