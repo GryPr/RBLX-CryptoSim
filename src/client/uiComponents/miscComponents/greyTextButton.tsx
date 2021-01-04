@@ -1,5 +1,6 @@
 import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper";
+import { playButtonSound } from "../utils";
 
 interface greyTextButtonProps {
   onClick: () => void;
@@ -30,12 +31,13 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
 
   public render(): Roact.Element {
     return (
-      <imagebutton
+      <textbutton
         Event={{
           MouseButton1Down: () => {
             this.props.onClick();
+            playButtonSound("421058925");
             this.motor.setGoal(
-              new Flipper.Spring(-0.4, {
+              new Flipper.Spring(0.4, {
                 frequency: 10,
                 dampingRatio: 1,
               })
@@ -50,37 +52,37 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
             );
           },
         }}
-        Image={"rbxassetid://6182140353"}
         BackgroundTransparency={1}
         AnchorPoint={new Vector2(0.5, 0.5)}
-        Size={this.binding.map((value) => {
-          return this.props.Size?.Lerp(
-            new UDim2(
-              this.props.Size?.X.add(new UDim(this.props.Size?.X.Scale / 10)),
-              this.props.Size?.Y.add(new UDim(this.props.Size?.Y.Scale / 10))
-            ),
-            value
-          )!;
-        })}
+        Size={this.props.Size}
         Position={this.props.Position}
+        Text={""}
+        TextScaled={true}
+        TextWrapped={true}
+        RichText={true}
+        Font={"Code"}
       >
-        <uiaspectratioconstraint
-          AspectRatio={3}
-          DominantAxis={"Height"}
-          AspectType={"ScaleWithParentSize"}
-        />
-        <textlabel
-          Text={this.props.Text}
-          Size={new UDim2(0.9, 0, 0.7, 0)}
+        <imagelabel
+          Image={"rbxassetid://6182140353"}
+          Size={this.binding.map((value) => {
+            return new UDim2(1, 0, 1, 0).Lerp(new UDim2(0.9, 0, 0.9, 0), value);
+          })}
           Position={new UDim2(0.5, 0, 0.5, 0)}
           AnchorPoint={new Vector2(0.5, 0.5)}
           BackgroundTransparency={1}
+        ></imagelabel>
+        <textlabel
+          BackgroundTransparency={1}
+          AnchorPoint={new Vector2(0.5, 0.5)}
+          Size={new UDim2(0.9, 0, 0.6, 0)}
+          Position={new UDim2(0.5, 0, 0.45, 0)}
+          Text={this.props.Text}
           TextScaled={true}
           TextWrapped={true}
           RichText={true}
           Font={"Code"}
         ></textlabel>
-      </imagebutton>
+      </textbutton>
     );
   }
 }

@@ -14,8 +14,8 @@ export class MainButtons extends Roact.Component {
             <screengui Key="MainButtons">
               <GreyTextButton
                 Key={"OpenPetInventory"}
-                Size={new UDim2(0.1, 0, 0.05, 0)}
-                Position={new UDim2(0.06, 0, 0.05, 0)}
+                Size={new UDim2(0.1, 0, 0.07, 0)}
+                Position={new UDim2(0.055, 0, 0.08, 0)}
                 onClick={() => {
                   value.changeViewIndex(1);
                 }}
@@ -23,21 +23,21 @@ export class MainButtons extends Roact.Component {
               />
               <GreyTextButton
                 Key={"OpenClickUpgrades"}
-                Size={new UDim2(0.1, 0, 0.05, 0)}
-                Position={new UDim2(0.06, 0, 0.11, 0)}
+                Size={new UDim2(0.1, 0, 0.07, 0)}
+                Position={new UDim2(0.055, 0, 0.16, 0)}
                 onClick={() => {
                   value.changeViewIndex(2);
                 }}
-                Text={"Click Upgrades"}
+                Text={"Upgrades"}
               />
               <GreyTextButton
                 Key={"OpenLimitUpgrades"}
-                Size={new UDim2(0.1, 0, 0.05, 0)}
-                Position={new UDim2(0.06, 0, 0.17, 0)}
+                Size={new UDim2(0.1, 0, 0.07, 0)}
+                Position={new UDim2(0.055, 0, 0.24, 0)}
                 onClick={() => {
                   value.changeViewIndex(3);
                 }}
-                Text={"Limiter Upgrades"}
+                Text={"Limiter"}
               />
             </screengui>
           );

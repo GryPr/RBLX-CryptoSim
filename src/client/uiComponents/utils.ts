@@ -2,7 +2,7 @@ import { SoundService } from "@rbxts/services";
 
 export function playButtonSound(id: string) {
   let sound = new Instance("Sound");
-  sound.SoundId = id;
+  sound.SoundId = `rbxassetid://${id}`;
   SoundService.PlayLocalSound(sound);
   sound.Destroy();
 }
