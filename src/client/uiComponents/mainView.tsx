@@ -20,7 +20,11 @@ export class MainUI extends Roact.Component<{}, mainUIState> {
     });
   }
 
-  changeViewIndex(index: number) {}
+  changeViewIndex(index: number) {
+    this.setState({
+      viewIndex: index,
+    });
+  }
 
   public render(): Roact.Element {
     return (
