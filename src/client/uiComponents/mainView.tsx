@@ -2,7 +2,7 @@ import * as Roact from "@rbxts/roact";
 import { PetInventory } from "./pet/pet";
 import { Counter } from "./counter/counter";
 import { testPetInventory } from "../testValues/testPetInventory";
-import { GreyTextButton } from "./misc";
+import { GreyTextButton } from "./miscComponents/greyTextButton";
 
 export const mainContext = Roact.createContext({
   viewIndex: 0,
