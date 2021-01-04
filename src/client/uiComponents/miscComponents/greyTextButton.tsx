@@ -2,7 +2,7 @@ import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper";
 
 interface greyTextButtonProps {
-  onClick?: any;
+  onClick?: () => void;
   Text?: string;
   Size?: UDim2;
   Position?: UDim2;

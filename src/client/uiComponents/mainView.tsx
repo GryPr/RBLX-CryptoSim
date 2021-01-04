@@ -54,6 +54,7 @@ export class UI extends Roact.Component<{}, mainUIState> {
     this.setState({
       viewIndex: index,
     });
+    print(`view: ${index}`);
   }
 
   public render(): Roact.Element {
