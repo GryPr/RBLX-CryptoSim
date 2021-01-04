@@ -2,7 +2,7 @@ import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper";
 
 interface greyTextButtonProps {
-  onClick?: () => void;
+  onClick: () => void;
   Text?: string;
   Size?: UDim2;
   Position?: UDim2;
@@ -22,6 +22,7 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
   }
 
   static defaultProps: greyTextButtonProps = {
+    onClick: () => {},
     Text: "GreyTextButton",
     Size: new UDim2(0, 100, 0, 100),
     Position: new UDim2(0, 0, 0, 0),
@@ -32,7 +33,7 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
       <imagebutton
         Event={{
           MouseButton1Down: () => {
-            this.props.onClick;
+            this.props.onClick();
             this.motor.setGoal(
               new Flipper.Spring(-0.4, {
                 frequency: 10,
