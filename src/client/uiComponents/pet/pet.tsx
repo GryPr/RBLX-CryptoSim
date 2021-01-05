@@ -2,7 +2,6 @@ import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper";
 import { Pet } from "shared/items/types";
 import { PetInventoryItem } from "./petInventoryItem";
-import { PetInventoryOpenButton } from "./petOpenButton";
 import { mainContext } from "../mainContext";
 
 const Players = game.GetService("Players");

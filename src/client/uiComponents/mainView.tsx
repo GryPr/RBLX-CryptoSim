@@ -4,6 +4,7 @@ import { Counter } from "./counter/counter";
 import { testPetInventory } from "../testValues/testPetInventory";
 import { MainButtons } from "./mainButtons";
 import { mainContext } from "./mainContext";
+import { ClickUpgradeView } from "./clickUpgrade/clickUpgrade";
 
 interface mainUIState {
   viewIndex: number;
@@ -66,6 +67,7 @@ export class UI extends Roact.Component<{}, mainUIState> {
           <MainButtons />
           <Counter />
           <PetInventory petInventoryList={testPetInventory} />
+          <ClickUpgradeView></ClickUpgradeView>
         </mainContext.Provider>
       </screengui>
     );

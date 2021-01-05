@@ -1,5 +1,5 @@
 import * as Roact from "@rbxts/roact";
-import { GreyTextButton } from "./miscComponents/greyTextButton";
+import { GreyTextButton } from "./baseComponents/greyTextButton";
 import { mainContext } from "./mainContext";
 
 export class MainButtons extends Roact.Component {
