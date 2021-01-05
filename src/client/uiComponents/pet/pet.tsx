@@ -3,6 +3,7 @@ import * as Flipper from "@rbxts/flipper";
 import { Pet } from "shared/items/types";
 import { PetInventoryItem } from "./petInventoryItem";
 import { PetInventoryOpenButton } from "./petOpenButton";
+import { mainContext } from "../mainContext";
 
 const Players = game.GetService("Players");
 const player = Players.LocalPlayer;
@@ -60,54 +61,71 @@ export class PetInventory extends Roact.Component<
 
   public render(): Roact.Element {
     return (
-      <screengui Key="PetUI">
-        <frame
-          Position={this.inventoryBinding.map((value) => {
-            return new UDim2(0.5, 0, -2, 0).Lerp(
-              new UDim2(0.5, 0, 0.5, 0),
-              value
-            );
-          })}
-          Size={new UDim2(0.5, 0, 0.8, 0)}
-          AnchorPoint={new Vector2(0.5, 0.5)}
-          BackgroundTransparency={0.1}
-          BorderSizePixel={0}
-          BackgroundColor3={new Color3(255, 255, 255)}
-        >
-          <uiaspectratioconstraint Key="aspectRatio" />
-          <scrollingframe
-            Key={"Inventory"}
-            BackgroundTransparency={1}
-            AnchorPoint={new Vector2(0.5, 0.5)}
-            Position={new UDim2(0.5, 0, 0.5, 0)}
-            Size={new UDim2(0.95, 0, 0.95, 0)}
-            ScrollBarImageColor3={new Color3(0, 0, 0)}
-            BorderSizePixel={0}
-            ScrollBarImageTransparency={0.5}
-            VerticalScrollBarInset="ScrollBar"
-          >
-            <uigridlayout
-              Key="gridLayout"
-              CellSize={new UDim2(0.2, 0, 0.2, 0)}
-              CellPadding={new UDim2(0.025, 0, 0.025, 0)}
-              HorizontalAlignment="Center"
-            >
-              <uiaspectratioconstraint Key="aspectRatio" />
-            </uigridlayout>
-            {this.props.petInventoryList.map((item, index) => {
-              return (
-                <PetInventoryItem
-                  Key={`${index + 1}`}
-                  onClick={() => this.toggle()}
-                  petId={item.id}
-                ></PetInventoryItem>
-                // <textbutton Key={index} Text={item.Name}></textbutton>
-              );
-            })}
-          </scrollingframe>
-        </frame>
-        <PetInventoryOpenButton onClick={() => this.toggle()} />
-      </screengui>
+      <mainContext.Consumer
+        render={(value: {
+          viewIndex: number;
+          changeViewIndex: (index: number) => void;
+        }) => {
+          if (this.state.inventoryVisible === true && value.viewIndex !== 1) {
+            this.toggle();
+          } else if (
+            this.state.inventoryVisible === false &&
+            value.viewIndex === 1
+          ) {
+            this.toggle();
+          }
+          return (
+            <screengui Key="PetUI">
+              <frame
+                Position={this.inventoryBinding.map((value) => {
+                  return new UDim2(0.5, 0, -2, 0).Lerp(
+                    new UDim2(0.5, 0, 0.5, 0),
+                    value
+                  );
+                })}
+                Size={new UDim2(0.5, 0, 0.8, 0)}
+                AnchorPoint={new Vector2(0.5, 0.5)}
+                BackgroundTransparency={0.1}
+                BorderSizePixel={0}
+                BackgroundColor3={new Color3(255, 255, 255)}
+              >
+                <uiaspectratioconstraint Key="aspectRatio" />
+                <scrollingframe
+                  Key={"Inventory"}
+                  BackgroundTransparency={1}
+                  AnchorPoint={new Vector2(0.5, 0.5)}
+                  Position={new UDim2(0.5, 0, 0.5, 0)}
+                  Size={new UDim2(0.95, 0, 0.95, 0)}
+                  ScrollBarImageColor3={new Color3(0, 0, 0)}
+                  BorderSizePixel={0}
+                  ScrollBarImageTransparency={0.5}
+                  VerticalScrollBarInset="ScrollBar"
+                >
+                  <uigridlayout
+                    Key="gridLayout"
+                    CellSize={new UDim2(0.2, 0, 0.2, 0)}
+                    CellPadding={new UDim2(0.025, 0, 0.025, 0)}
+                    HorizontalAlignment="Center"
+                  >
+                    <uiaspectratioconstraint Key="aspectRatio" />
+                  </uigridlayout>
+                  {this.props.petInventoryList.map((item, index) => {
+                    return (
+                      <PetInventoryItem
+                        Key={`${index + 1}`}
+                        onClick={() => this.toggle()}
+                        petId={item.id}
+                      ></PetInventoryItem>
+                      // <textbutton Key={index} Text={item.Name}></textbutton>
+                    );
+                  })}
+                </scrollingframe>
+              </frame>
+              <PetInventoryOpenButton onClick={() => this.toggle()} />
+            </screengui>
+          );
+        }}
+      ></mainContext.Consumer>
     );
   }
 }

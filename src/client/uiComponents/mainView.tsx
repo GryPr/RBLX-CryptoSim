@@ -7,6 +7,7 @@ import { mainContext } from "./mainContext";
 
 interface mainUIState {
   viewIndex: number;
+  changeViewIndex: (index: number) => void;
 }
 
 export class MainUI extends Roact.Component<{}, mainUIState> {
@@ -14,6 +15,7 @@ export class MainUI extends Roact.Component<{}, mainUIState> {
     super(props);
     this.setState({
       viewIndex: 0,
+      changeViewIndex: (index: number) => this.changeViewIndex(index),
     });
   }
 
@@ -26,12 +28,7 @@ export class MainUI extends Roact.Component<{}, mainUIState> {
   public render(): Roact.Element {
     return (
       <screengui>
-        <mainContext.Provider
-          value={{
-            viewIndex: this.state.viewIndex,
-            changeViewIndex: (index: number) => this.changeViewIndex(index),
-          }}
-        >
+        <mainContext.Provider value={this.state}>
           <Counter />
           <PetInventory petInventoryList={testPetInventory} />
         </mainContext.Provider>
@@ -68,6 +65,7 @@ export class UI extends Roact.Component<{}, mainUIState> {
         >
           <MainButtons />
           <Counter />
+          <PetInventory petInventoryList={testPetInventory} />
         </mainContext.Provider>
       </screengui>
     );

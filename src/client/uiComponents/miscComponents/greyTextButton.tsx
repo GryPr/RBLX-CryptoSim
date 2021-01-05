@@ -57,10 +57,6 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
         Size={this.props.Size}
         Position={this.props.Position}
         Text={""}
-        TextScaled={true}
-        TextWrapped={true}
-        RichText={true}
-        Font={"Code"}
       >
         <imagelabel
           Image={"rbxassetid://6182140353"}
@@ -79,6 +75,7 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
           Text={this.props.Text}
           TextScaled={true}
           TextWrapped={true}
+          TextSize={25}
           RichText={true}
           Font={"Code"}
         ></textlabel>
