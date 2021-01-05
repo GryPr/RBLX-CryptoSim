@@ -1,8 +1,8 @@
 import * as Roact from "@rbxts/roact";
 import { InventoryView } from "../baseComponents/inventoryView";
 
-export class LimitUpgradeView extends Roact.Component {
+export class ClickUpgradeView extends Roact.Component {
   public render(): Roact.Element {
-    return <InventoryView Key="LimitUpgradeView" index={3}></InventoryView>;
+    return <InventoryView Key="ClickUpgradeView" index={2}></InventoryView>;
   }
 }

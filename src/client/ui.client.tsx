@@ -1,5 +1,5 @@
 import * as Roact from "@rbxts/roact";
-import { MainUI, UI } from "./uiComponents/mainView";
+import { UI } from "./uiComponents/mainView";
 
 const Players = game.GetService("Players");
 

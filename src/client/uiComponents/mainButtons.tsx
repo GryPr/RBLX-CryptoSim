@@ -1,5 +1,5 @@
 import * as Roact from "@rbxts/roact";
-import { GreyTextButton } from "./baseComponents/greyTextButton";
+import { GreyTextButton } from "./baseComponents/greyTextButtonComponent";
 import { mainContext } from "./mainContext";
 
 export class MainButtons extends Roact.Component {
@@ -21,6 +21,7 @@ export class MainButtons extends Roact.Component {
                   if (value.viewIndex === index) {
                     value.changeViewIndex(0);
                   } else {
+                    value.changeViewIndex(0);
                     value.changeViewIndex(index);
                   }
                 }}
@@ -35,6 +36,7 @@ export class MainButtons extends Roact.Component {
                   if (value.viewIndex === index) {
                     value.changeViewIndex(0);
                   } else {
+                    value.changeViewIndex(0);
                     value.changeViewIndex(index);
                   }
                 }}
@@ -49,6 +51,7 @@ export class MainButtons extends Roact.Component {
                   if (value.viewIndex === index) {
                     value.changeViewIndex(0);
                   } else {
+                    value.changeViewIndex(0);
                     value.changeViewIndex(index);
                   }
                 }}

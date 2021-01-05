@@ -6,7 +6,7 @@ const Players = game.GetService("Players");
 const player = Players.LocalPlayer;
 
 interface petInventoryItemProps {
-  onclick: any;
+  // onclick: any;
   petId: number;
 }
 
@@ -108,15 +108,17 @@ export class PetInventoryItem extends Roact.Component<
   }
 
   public didMount() {
-    this.model.Parent = this.viewportRef.getValue();
-    this.currentCamera.Parent = this.viewportRef.getValue();
-    spawn(() => {
-      RunService.RenderStepped.Connect(() => {
-        this.renderModel();
-        this.setState({
-          rotation: this.state.rotation + 1,
+    if (this.model !== undefined) {
+      this.model.Parent = this.viewportRef.getValue();
+      this.currentCamera.Parent = this.viewportRef.getValue();
+      spawn(() => {
+        RunService.RenderStepped.Connect(() => {
+          this.renderModel();
+          this.setState({
+            rotation: this.state.rotation + 1,
+          });
         });
       });
-    });
+    }
   }
 }
