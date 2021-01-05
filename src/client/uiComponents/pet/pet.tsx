@@ -121,7 +121,6 @@ export class PetInventory extends Roact.Component<
                   })}
                 </scrollingframe>
               </frame>
-              <PetInventoryOpenButton onClick={() => this.toggle()} />
             </screengui>
           );
         }}

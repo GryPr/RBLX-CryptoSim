@@ -17,7 +17,12 @@ export class MainButtons extends Roact.Component {
                 Size={new UDim2(0.1, 0, 0.07, 0)}
                 Position={new UDim2(0.055, 0, 0.08, 0)}
                 onClick={() => {
-                  value.changeViewIndex(1);
+                  let index: number = 1;
+                  if (value.viewIndex === index) {
+                    value.changeViewIndex(0);
+                  } else {
+                    value.changeViewIndex(index);
+                  }
                 }}
                 Text={"Pet Inventory"}
               />
@@ -26,7 +31,12 @@ export class MainButtons extends Roact.Component {
                 Size={new UDim2(0.1, 0, 0.07, 0)}
                 Position={new UDim2(0.055, 0, 0.16, 0)}
                 onClick={() => {
-                  value.changeViewIndex(2);
+                  let index: number = 2;
+                  if (value.viewIndex === index) {
+                    value.changeViewIndex(0);
+                  } else {
+                    value.changeViewIndex(index);
+                  }
                 }}
                 Text={"Upgrades"}
               />
@@ -35,7 +45,12 @@ export class MainButtons extends Roact.Component {
                 Size={new UDim2(0.1, 0, 0.07, 0)}
                 Position={new UDim2(0.055, 0, 0.24, 0)}
                 onClick={() => {
-                  value.changeViewIndex(3);
+                  let index: number = 3;
+                  if (value.viewIndex === index) {
+                    value.changeViewIndex(0);
+                  } else {
+                    value.changeViewIndex(index);
+                  }
                 }}
                 Text={"Limiter"}
               />
