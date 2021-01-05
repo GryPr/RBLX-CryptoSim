@@ -8,6 +8,6 @@ import {
   TweenService,
   ReplicatedStorage,
 } from "@rbxts/services";
-import { GreyTextButton } from "./misc";
+import { GreyTextButton } from "../baseComponents/greyTextButton";
 
 export {};

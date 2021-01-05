@@ -1,6 +1,6 @@
 import * as Roact from "@rbxts/roact";
 import * as Flipper from "@rbxts/flipper";
-import { playButtonSound } from "./utils";
+import { playButtonSound } from "../utils";
 
 interface shopState {
   shopVisible: boolean;
