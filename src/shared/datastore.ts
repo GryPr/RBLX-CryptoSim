@@ -90,18 +90,24 @@ export class DataStore {
     return profile.Salt;
   }
 
-  sellSalt(player: Player): void | number {
+  sellSalt(player: Player): SciNum {
     let profile = this.CachedProfiles.get(player)!;
     if (profile.Salt === undefined) {
       profile.Salt = {
         Base: 0,
         Exponent: 0,
       };
-      return;
     }
+    let salt: SciNum = profile.Salt!;
+    let money: SciNum = SciNumToolKit.multiply(
+      salt,
+      this.calculateMoneyMultiplier(player)
+    );
+    this.addMoney(player, money);
+    return money;
   }
 
-  addMoney(player: Player, money: number) {
+  addMoney(player: Player, money: SciNum) {
     let profile = this.CachedProfiles.get(player)!;
     if (profile === undefined) {
       return;
@@ -112,6 +118,7 @@ export class DataStore {
         Exponent: 0,
       };
     }
+    profile.Money = SciNumToolKit.add(profile.Money, money);
   }
 
   getMoney(player: Player): void | SciNum {
