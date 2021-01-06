@@ -61,7 +61,7 @@ export class EphemeralClick extends Roact.Component<
             BackgroundTransparency={1}
             Position={new UDim2(0.3, 0, 0, 0)}
             Size={new UDim2(2, 0, 1, 0)}
-            Font="Highway"
+            Font="SciFi"
             TextScaled={true}
             TextXAlignment="Left"
             TextTransparency={this.state.transparency}
@@ -78,7 +78,7 @@ export class EphemeralClick extends Roact.Component<
             Size={new UDim2(0.25, 0, 0.25, 0)}
             SizeConstraint="RelativeXX"
             ImageTransparency={this.state.transparency}
-            Image={"rbxassetid://6169181960"}
+            Image={"rbxassetid://6197029040"}
           />
         </frame>
       </screengui>

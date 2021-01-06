@@ -44,13 +44,16 @@ export class Counter extends Roact.Component<{}, counterState> {
             BackgroundTransparency={1}
             Position={new UDim2(0.3, 0, 0, 0)}
             Size={new UDim2(2, 0, 1, 0)}
-            Font="Highway"
+            Font="SciFi"
             TextScaled={true}
             TextXAlignment="Left"
             Text={`${SciNumToolKit.removeDecimal(
               this.state.saltTotal.Base,
               1
             )}${getOrderPrefix(this.state.saltTotal.Exponent)}`}
+            TextColor3={new Color3(0, 0, 0)}
+            TextStrokeColor3={new Color3(0, 255, 255)}
+            TextStrokeTransparency={0.5}
           />
 
           <imagelabel
@@ -59,7 +62,8 @@ export class Counter extends Roact.Component<{}, counterState> {
             Position={new UDim2(0, 0, 0.143, 0)}
             Size={new UDim2(0.25, 0, 0.25, 0)}
             SizeConstraint="RelativeXX"
-            Image={"rbxassetid://6169181960"}
+            Image={"rbxassetid://6197029040"}
+            ImageTransparency={0}
           />
         </frame>
 
@@ -74,12 +78,15 @@ export class Counter extends Roact.Component<{}, counterState> {
             BackgroundTransparency={1}
             Position={new UDim2(0.3, 0, 0, 0)}
             Size={new UDim2(2, 0, 1, 0)}
-            Font="Highway"
+            Font="SciFi"
             TextScaled={true}
             TextXAlignment="Left"
             Text={`${this.state.moneyTotal.Base}${getOrderPrefix(
               this.state.moneyTotal.Exponent
             )}`}
+            TextColor3={new Color3(0, 0, 0)}
+            TextStrokeColor3={new Color3(0, 255, 255)}
+            TextStrokeTransparency={0.5}
           />
 
           <imagelabel

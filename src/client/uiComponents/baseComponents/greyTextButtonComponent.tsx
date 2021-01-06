@@ -59,7 +59,8 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
         Text={""}
       >
         <imagelabel
-          Image={"rbxassetid://6182140353"}
+          Image={"rbxassetid://6196970013"}
+          ImageTransparency={0.3}
           Size={this.binding.map((value) => {
             return new UDim2(1, 0, 1, 0).Lerp(new UDim2(0.9, 0, 0.9, 0), value);
           })}
@@ -69,6 +70,7 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
         ></imagelabel>
         <textlabel
           BackgroundTransparency={1}
+          TextColor3={new Color3(255, 255, 255)}
           AnchorPoint={new Vector2(0.5, 0.5)}
           Size={new UDim2(0.9, 0, 0.6, 0)}
           Position={new UDim2(0.5, 0, 0.45, 0)}
@@ -77,7 +79,7 @@ export class GreyTextButton extends Roact.Component<greyTextButtonProps> {
           TextWrapped={true}
           TextSize={25}
           RichText={true}
-          Font={"Code"}
+          Font={"SciFi"}
         ></textlabel>
       </textbutton>
     );

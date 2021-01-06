@@ -84,10 +84,18 @@ export class InventoryView extends Roact.Component<
                 })}
                 Size={new UDim2(0.5, 0, 0.8, 0)}
                 AnchorPoint={new Vector2(0.5, 0.5)}
-                BackgroundTransparency={0.1}
+                BackgroundTransparency={1}
                 BorderSizePixel={0}
                 BackgroundColor3={new Color3(255, 255, 255)}
               >
+                <imagelabel
+                  Key={"Background"}
+                  Size={new UDim2(1, 0, 1, 0)}
+                  BackgroundTransparency={1}
+                  ImageTransparency={0.3}
+                  ZIndex={0}
+                  Image={"rbxassetid://6196969584"}
+                ></imagelabel>
                 <uiaspectratioconstraint Key="aspectRatio" />
                 <scrollingframe
                   Key={"Inventory"}
