@@ -103,6 +103,10 @@ export class DataStore {
       salt,
       this.calculateMoneyMultiplier(player)
     );
+    profile.Salt = {
+      Base: 0,
+      Exponent: 0,
+    };
     this.addMoney(player, money);
     return money;
   }

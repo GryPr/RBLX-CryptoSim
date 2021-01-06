@@ -10,25 +10,24 @@ for (const obj of CollectionService.GetTagged("SellPoint")) {
   if (obj.IsA("Part")) {
     obj.Touched.Connect((part) => {
       if (
-        obj.Parent?.IsA("Model") &&
-        obj.Parent?.FindFirstAncestorOfClass("Humanoid") &&
         Players.GetPlayerFromCharacter(part.Parent)! === Players.LocalPlayer
       ) {
-        let player: Player = Players.GetPlayerFromCharacter(part.Parent)!;
-        touching = true;
-        spawn(() => {
-          while (touching) {
-            wait(1);
+        if (touching === false) {
+          print("Send hash");
+          spawn(() => {
+            touching = true;
             consumeHashes.SendToServer();
-          }
-        });
+            wait(1);
+            touching = false;
+          });
+        }
       }
     });
 
     obj.TouchEnded.Connect((part) => {
       if (
-        obj.Parent?.IsA("Model") &&
-        obj.Parent?.FindFirstAncestorOfClass("Humanoid") &&
+        part.Parent?.IsA("Model") &&
+        part.Parent?.FindFirstAncestorOfClass("Humanoid") &&
         Players.GetPlayerFromCharacter(part.Parent)! === Players.LocalPlayer
       ) {
         let player: Player = Players?.GetPlayerFromCharacter(part.Parent)!;

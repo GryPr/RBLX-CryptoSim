@@ -47,10 +47,8 @@ initEvent.Connect((player: Player) => {
   });
 
   promise.then(() => {
-    let saltTotal = data.getSalt(player);
-    let moneyTotal = data.getMoney(player);
-    returnSaltTotal.SendToPlayer(player, saltTotal);
-    returnMoneyTotal.SendToPlayer(player, moneyTotal);
+    returnSaltTotal.SendToPlayer(player, data.getSalt(player));
+    returnMoneyTotal.SendToPlayer(player, data.getMoney(player));
   });
 });
 
@@ -60,4 +58,6 @@ saveGame.Connect((player: Player) => {
 
 consumeHashes.Connect((player: Player) => {
   data.sellSalt(player);
+  returnMoneyTotal.SendToPlayer(player, data.getMoney(player)!);
+  returnSaltTotal.SendToPlayer(player, data.getSalt(player));
 });
