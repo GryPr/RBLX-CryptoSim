@@ -1,5 +1,24 @@
 import { SciNum } from "../../scinum";
 import { Pet } from "../types";
+
+export function getPet(id: number): [SciNum, SciNum] {
+  for (const element of petList) {
+    if (element.id === id) {
+      return [element.SaltMultiplier, element.MoneyMultiplier];
+    }
+  }
+  return [
+    {
+      Base: 1,
+      Exponent: 0,
+    },
+    {
+      Base: 1,
+      Exponent: 0,
+    },
+  ];
+}
+
 export const petList: Array<Pet> = [
   {
     Name: "Starter",

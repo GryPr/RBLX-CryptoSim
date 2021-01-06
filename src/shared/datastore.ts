@@ -1,11 +1,8 @@
 import * as ProfileService from "@rbxts/profileservice";
-import {
-  Profile,
-  ProfileStore,
-  ViewProfile,
-} from "@rbxts/profileservice/globals";
+import { Profile } from "@rbxts/profileservice/globals";
 import { PlayerData, ProfileTemplate } from "./types";
 import { SciNum, SciNumToolKit } from "./scinum";
+import { getPet } from "./items/lists/pets";
 const Players = game.GetService("Players");
 
 export class DataStore {
@@ -35,8 +32,9 @@ export class DataStore {
     let cachedProfile: PlayerData = {
       Money: profile.Data.Money,
       Salt: profile.Data.Salt,
-      Multipliers: profile.Data.Multipliers,
+      ClickUpgrade: profile.Data.ClickUpgrade,
       Limit: profile.Data.Limit,
+      PetInventory: profile.Data.PetInventory,
     };
     this.CachedProfiles.set(player, cachedProfile);
   }
@@ -55,8 +53,9 @@ export class DataStore {
     profile.Data = {
       Money: cachedProfile.Money,
       Salt: cachedProfile.Salt,
-      Multipliers: cachedProfile.Multipliers,
+      ClickUpgrade: cachedProfile.ClickUpgrade,
       Limit: cachedProfile.Limit,
+      PetInventory: cachedProfile.PetInventory,
     };
   }
 
@@ -135,8 +134,8 @@ export class DataStore {
       Base: 1,
       Exponent: 0,
     };
-    profile?.Multipliers.forEach((element) => {
-      multiplier = SciNumToolKit.multiply(multiplier, element.SaltMultiplier);
+    profile?.PetInventory.forEach((element) => {
+      multiplier = SciNumToolKit.multiply(multiplier, getPet(element)[0]);
     });
     return multiplier;
   }
@@ -151,8 +150,8 @@ export class DataStore {
       Base: 1,
       Exponent: 0,
     };
-    profile?.Multipliers.forEach((element) => {
-      multiplier = SciNumToolKit.multiply(multiplier, element.MoneyMultiplier);
+    profile?.PetInventory.forEach((element) => {
+      multiplier = SciNumToolKit.multiply(multiplier, getPet(element)[1]);
     });
     return multiplier;
   }
