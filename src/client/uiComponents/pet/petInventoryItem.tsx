@@ -85,7 +85,11 @@ export class PetInventoryItem extends Roact.Component<
 
   public render(): Roact.Element {
     return (
-      <imagelabel Image={"rbxassetid://6182082398"} BackgroundTransparency={1}>
+      <imagelabel
+        Image={"rbxassetid://6197052134"}
+        BackgroundTransparency={1}
+        ImageTransparency={0.5}
+      >
         <viewportframe
           CurrentCamera={this.currentCamera}
           Ref={this.viewportRef}

@@ -25,7 +25,7 @@ export class MainButtons extends Roact.Component {
                     value.changeViewIndex(index);
                   }
                 }}
-                Text={"Pet Inventory"}
+                Text={"Pets"}
               />
               <GreyTextButton
                 Key={"OpenClickUpgrades"}
@@ -40,7 +40,7 @@ export class MainButtons extends Roact.Component {
                     value.changeViewIndex(index);
                   }
                 }}
-                Text={"Upgrades"}
+                Text={"Crypto"}
               />
               <GreyTextButton
                 Key={"OpenLimitUpgrades"}
@@ -55,7 +55,7 @@ export class MainButtons extends Roact.Component {
                     value.changeViewIndex(index);
                   }
                 }}
-                Text={"Limiter"}
+                Text={"Storage"}
               />
             </screengui>
           );

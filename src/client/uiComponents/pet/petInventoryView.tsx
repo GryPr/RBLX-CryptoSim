@@ -6,7 +6,7 @@ import { PetInventoryItem } from "./petInventoryItem";
 export class PetInventoryView extends Roact.Component {
   public render(): Roact.Element {
     return (
-      <InventoryView Key="PetInventoryView" index={1}>
+      <InventoryView Key="PetInventoryView" index={1} name={"Pet Inventory"}>
         {testPetInventory.map((item, index) => {
           return (
             <PetInventoryItem

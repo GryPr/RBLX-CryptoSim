@@ -8,6 +8,7 @@ interface inventoryState {
 
 interface inventoryProps {
   index: number;
+  name: string;
 }
 
 export class InventoryView extends Roact.Component<
@@ -88,6 +89,17 @@ export class InventoryView extends Roact.Component<
                 BorderSizePixel={0}
                 BackgroundColor3={new Color3(255, 255, 255)}
               >
+                <textlabel
+                  Text={this.props.name}
+                  AnchorPoint={new Vector2(0.5, 0.5)}
+                  Position={new UDim2(0.5, 0, -0.05, 0)}
+                  Size={new UDim2(0.4, 0, 0.1, 0)}
+                  BackgroundTransparency={1}
+                  TextColor3={new Color3(0, 0, 0)}
+                  TextStrokeColor3={new Color3(0, 255, 255)}
+                  TextStrokeTransparency={0.5}
+                  TextScaled={true}
+                ></textlabel>
                 <imagelabel
                   Key={"Background"}
                   Size={new UDim2(1, 0, 1, 0)}
