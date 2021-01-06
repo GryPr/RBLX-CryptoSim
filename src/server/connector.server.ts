@@ -13,6 +13,8 @@ const returnMoneyAddend = new Net.ServerEvent("returnMoneyAddend");
 const returnMoneyTotal = new Net.ServerEvent("returnMoneyTotal");
 const returnMoneyExp = new Net.ServerEvent("returnMoneyExp");
 
+const consumeHashes = new Net.ServerEvent("consumeHashes");
+
 const saveGame = new Net.ServerEvent("Save");
 
 clickEvent.Connect((player: Player) => {
@@ -54,4 +56,8 @@ initEvent.Connect((player: Player) => {
 
 saveGame.Connect((player: Player) => {
   data.playerSaveData(player);
+});
+
+consumeHashes.Connect((player: Player) => {
+  data.sellSalt(player);
 });
