@@ -1,4 +1,5 @@
 import { client } from "shared/clientconnector";
+import { UserInputService } from "@rbxts/services";
 const Players = game.GetService("Players");
 const localPlayer = Players.LocalPlayer;
 const localMouse = localPlayer.GetMouse();
@@ -13,10 +14,16 @@ function Click() {
     while (running) {
       client.playerClick();
       wait(0.2);
+      let stillRunning: boolean = false;
+      for (const element of UserInputService.GetMouseButtonsPressed()) {
+        if (element.UserInputType.Name === "MouseButton1") {
+          stillRunning = true;
+        }
+      }
+      if (stillRunning === false) {
+        running = false;
+      }
     }
-  });
-  localMouse.Button1Up.Connect(() => {
-    running = false;
   });
 }
 
