@@ -1,4 +1,18 @@
 import { LimitUpgrade } from "../types";
+
+export let placeholderClickUpgradeList: Array<LimitUpgrade> = [];
+for (let i = 0; i < 25; i++) {
+  placeholderClickUpgradeList[i] = {
+    name: `Backpack ${i}`,
+    id: i,
+    image: ``,
+    limit: {
+      Base: 1 + 0.5 * i,
+      Exponent: 1,
+    },
+  };
+}
+
 const limitUpgradeList: Array<LimitUpgrade> = [
   {
     name: "Basic backpack",
